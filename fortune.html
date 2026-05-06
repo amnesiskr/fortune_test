@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <meta name="theme-color" content="#fff0f8" />
-  <title>✨ 오늘의 운세</title>
+  <title>✨ 구리와 람쥐의 오늘의 운세</title>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&display=swap');
 
@@ -65,13 +65,46 @@
     /* ── 타이틀 ── */
     .title-area { text-align: center; margin-bottom: 24px; }
 
+    /* 마스코트 + 수정구 행 */
+    .mascot-row {
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      gap: 0;
+      margin-bottom: 10px;
+    }
+
+    .mascot {
+      flex-shrink: 0;
+      width: 72px;
+      height: 72px;
+    }
+
     .title-icon {
       font-size: 64px;
       display: block;
       line-height: 1;
-      margin-bottom: 12px;
+      flex-shrink: 0;
       animation: wiggle 2.4s ease-in-out infinite;
       filter: drop-shadow(0 4px 12px rgba(255,126,179,0.4));
+    }
+
+    .mascot-frog {
+      animation: frog-bounce 2s ease-in-out infinite;
+      transform-origin: bottom center;
+    }
+    .mascot-squirrel {
+      animation: squirrel-wag 1.8s ease-in-out infinite;
+      transform-origin: bottom center;
+    }
+
+    @keyframes frog-bounce {
+      0%,100% { transform: translateY(0) rotate(-4deg); }
+      50%      { transform: translateY(-8px) rotate(3deg); }
+    }
+    @keyframes squirrel-wag {
+      0%,100% { transform: translateY(0) rotate(4deg); }
+      50%      { transform: translateY(-6px) rotate(-3deg); }
     }
 
     @keyframes wiggle {
@@ -82,14 +115,14 @@
     }
 
     h1 {
-      font-size: clamp(24px, 7vw, 32px);
+      font-size: clamp(18px, 5.5vw, 26px);
       font-weight: 900;
       background: linear-gradient(135deg, #ff7eb3, #b17afe, #74b9ff);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
-      letter-spacing: 3px;
-      line-height: 1.2;
+      letter-spacing: 1px;
+      line-height: 1.3;
     }
 
     .subtitle {
@@ -473,8 +506,103 @@
 
   <!-- 타이틀 -->
   <div class="title-area">
-    <span class="title-icon">🔮</span>
-    <h1>오늘의 운세</h1>
+    <div class="mascot-row">
+      <!-- 개구리 (왼쪽) -->
+      <svg class="mascot mascot-frog" viewBox="0 0 72 72" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <!-- 몸통 -->
+        <ellipse cx="36" cy="50" rx="22" ry="17" fill="#4ade80"/>
+        <ellipse cx="36" cy="50" rx="16" ry="12" fill="#86efac"/>
+        <!-- 뒷다리 -->
+        <ellipse cx="16" cy="60" rx="8" ry="5" fill="#4ade80" transform="rotate(-20 16 60)"/>
+        <ellipse cx="56" cy="60" rx="8" ry="5" fill="#4ade80" transform="rotate(20 56 60)"/>
+        <!-- 발 -->
+        <ellipse cx="10" cy="64" rx="7" ry="4" fill="#22c55e"/>
+        <ellipse cx="62" cy="64" rx="7" ry="4" fill="#22c55e"/>
+        <!-- 앞다리 -->
+        <ellipse cx="20" cy="53" rx="5" ry="4" fill="#4ade80" transform="rotate(-30 20 53)"/>
+        <ellipse cx="52" cy="53" rx="5" ry="4" fill="#4ade80" transform="rotate(30 52 53)"/>
+        <!-- 머리 -->
+        <ellipse cx="36" cy="34" rx="20" ry="17" fill="#4ade80"/>
+        <!-- 눈 불룩 -->
+        <ellipse cx="26" cy="25" rx="8" ry="8" fill="#4ade80"/>
+        <ellipse cx="46" cy="25" rx="8" ry="8" fill="#4ade80"/>
+        <!-- 눈 흰자 -->
+        <ellipse cx="26" cy="24" rx="6" ry="6" fill="white"/>
+        <ellipse cx="46" cy="24" rx="6" ry="6" fill="white"/>
+        <!-- 눈 검은자 -->
+        <circle cx="27" cy="25" r="3.5" fill="#1a1a2e"/>
+        <circle cx="47" cy="25" r="3.5" fill="#1a1a2e"/>
+        <!-- 눈 하이라이트 -->
+        <circle cx="28.5" cy="23.5" r="1.2" fill="white"/>
+        <circle cx="48.5" cy="23.5" r="1.2" fill="white"/>
+        <!-- 콧구멍 -->
+        <ellipse cx="33" cy="33" rx="2" ry="1.2" fill="#22c55e"/>
+        <ellipse cx="39" cy="33" rx="2" ry="1.2" fill="#22c55e"/>
+        <!-- 입 (웃는) -->
+        <path d="M28 38 Q36 44 44 38" stroke="#22c55e" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+        <!-- 볼 홍조 -->
+        <ellipse cx="19" cy="35" rx="5" ry="3.5" fill="#f9a8d4" opacity="0.5"/>
+        <ellipse cx="53" cy="35" rx="5" ry="3.5" fill="#f9a8d4" opacity="0.5"/>
+        <!-- 왕관(귀여운 리본) -->
+        <path d="M24 18 Q36 10 48 18" stroke="#fb923c" stroke-width="3" stroke-linecap="round" fill="none"/>
+        <circle cx="36" cy="10" r="3.5" fill="#fb923c"/>
+        <circle cx="24" cy="17" r="2.5" fill="#fbbf24"/>
+        <circle cx="48" cy="17" r="2.5" fill="#fbbf24"/>
+      </svg>
+
+      <!-- 수정구 -->
+      <span class="title-icon">🔮</span>
+
+      <!-- 다람쥐 (오른쪽) -->
+      <svg class="mascot mascot-squirrel" viewBox="0 0 72 72" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <!-- 꼬리 (크고 복슬복슬) -->
+        <ellipse cx="54" cy="38" rx="13" ry="18" fill="#d97706" transform="rotate(20 54 38)"/>
+        <ellipse cx="53" cy="38" rx="10" ry="14" fill="#fbbf24" transform="rotate(20 53 38)"/>
+        <!-- 몸통 -->
+        <ellipse cx="34" cy="50" rx="16" ry="14" fill="#92400e"/>
+        <ellipse cx="34" cy="52" rx="11" ry="10" fill="#fde68a"/>
+        <!-- 뒷다리 -->
+        <ellipse cx="22" cy="61" rx="7" ry="4.5" fill="#92400e" transform="rotate(-15 22 61)"/>
+        <ellipse cx="46" cy="61" rx="7" ry="4.5" fill="#92400e" transform="rotate(15 46 61)"/>
+        <!-- 발 -->
+        <ellipse cx="18" cy="65" rx="6" ry="3.5" fill="#78350f"/>
+        <ellipse cx="49" cy="65" rx="6" ry="3.5" fill="#78350f"/>
+        <!-- 앞발 (도토리 들기) -->
+        <ellipse cx="22" cy="52" rx="4.5" ry="4" fill="#92400e" transform="rotate(-20 22 52)"/>
+        <ellipse cx="46" cy="52" rx="4.5" ry="4" fill="#92400e" transform="rotate(20 46 52)"/>
+        <!-- 도토리 -->
+        <ellipse cx="34" cy="45" rx="5" ry="4" fill="#78350f"/>
+        <ellipse cx="34" cy="48" rx="5" ry="5.5" fill="#a16207"/>
+        <rect x="32" y="40" width="4" height="6" rx="1" fill="#15803d"/>
+        <!-- 머리 -->
+        <ellipse cx="34" cy="32" rx="16" ry="15" fill="#92400e"/>
+        <!-- 귀 -->
+        <ellipse cx="22" cy="20" rx="6" ry="8" fill="#92400e" transform="rotate(-15 22 20)"/>
+        <ellipse cx="46" cy="20" rx="6" ry="8" fill="#92400e" transform="rotate(15 46 20)"/>
+        <ellipse cx="22" cy="20" rx="3.5" ry="5.5" fill="#fca5a5" transform="rotate(-15 22 20)"/>
+        <ellipse cx="46" cy="20" rx="3.5" ry="5.5" fill="#fca5a5" transform="rotate(15 46 20)"/>
+        <!-- 눈 -->
+        <ellipse cx="28" cy="30" rx="5.5" ry="5.5" fill="white"/>
+        <ellipse cx="40" cy="30" rx="5.5" ry="5.5" fill="white"/>
+        <circle cx="29" cy="31" r="3.5" fill="#1a1a2e"/>
+        <circle cx="41" cy="31" r="3.5" fill="#1a1a2e"/>
+        <circle cx="30.5" cy="29.5" r="1.2" fill="white"/>
+        <circle cx="42.5" cy="29.5" r="1.2" fill="white"/>
+        <!-- 코 -->
+        <ellipse cx="34" cy="36" rx="2.5" ry="2" fill="#f87171"/>
+        <!-- 입 -->
+        <path d="M30 39 Q34 43 38 39" stroke="#b45309" stroke-width="2" stroke-linecap="round" fill="none"/>
+        <!-- 볼 홍조 -->
+        <ellipse cx="21" cy="35" rx="5" ry="3.5" fill="#fda4af" opacity="0.55"/>
+        <ellipse cx="47" cy="35" rx="5" ry="3.5" fill="#fda4af" opacity="0.55"/>
+        <!-- 수염 -->
+        <line x1="18" y1="36" x2="27" y2="37" stroke="#78350f" stroke-width="1.2" stroke-linecap="round"/>
+        <line x1="18" y1="39" x2="27" y2="38.5" stroke="#78350f" stroke-width="1.2" stroke-linecap="round"/>
+        <line x1="41" y1="37" x2="50" y2="36" stroke="#78350f" stroke-width="1.2" stroke-linecap="round"/>
+        <line x1="41" y1="38.5" x2="50" y2="39" stroke="#78350f" stroke-width="1.2" stroke-linecap="round"/>
+      </svg>
+    </div>
+    <h1>구리와 람쥐의 오늘의 운세</h1>
     <p class="subtitle">✨ 점성술 · 사주 · 팔자 ✨</p>
   </div>
 
