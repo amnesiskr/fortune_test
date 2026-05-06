@@ -419,9 +419,52 @@
     .reset-btn:hover  { border-color: var(--purple); color: var(--purple); background: #faf4ff; }
     .reset-btn:active { background: #f3eaff; }
 
+    /* ── 성명학 분석 카드 ── */
+    .name-analysis {
+      background: linear-gradient(135deg, #f0f8ff, #f8f0ff);
+      border: 2px solid rgba(116,185,255,0.25);
+      border-radius: 20px;
+      padding: 16px 14px;
+    }
+
+    .name-analysis-top {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+
+    .na-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 3px;
+      background: rgba(255,255,255,0.7);
+      border-radius: 14px;
+      padding: 10px 6px;
+      text-align: center;
+    }
+
+    .na-icon  { font-size: 20px; }
+    .na-label { font-size: 10px; color: var(--muted); font-weight: 700; letter-spacing: 0.3px; }
+    .na-val   { font-size: 13px; font-weight: 900; color: var(--text); }
+
+    .na-comment {
+      background: rgba(255,255,255,0.6);
+      border-radius: 12px;
+      padding: 10px 12px;
+      font-size: 13px;
+      line-height: 1.7;
+      color: #4a3a7a;
+      font-weight: 500;
+      word-break: keep-all;
+      text-align: center;
+    }
+
     @media (min-width: 420px) {
       .score-grid { grid-template-columns: repeat(3, 1fr); }
       .score-item.full { grid-column: auto; }
+      .name-analysis-top { grid-template-columns: repeat(4, 1fr); }
     }
   </style>
 </head>
@@ -553,6 +596,100 @@ function hashCode(str) {
   return Math.abs(h);
 }
 
+// ── 성명학 ──────────────────────────────────────────────
+// 한자 획수 테이블 (자주 쓰이는 한글 이름 글자 → 대표 획수)
+const 획수표 = {
+  '가':5,'각':9,'간':7,'강':11,'건':11,'경':15,'계':9,'고':10,'곤':8,'광':12,
+  '교':6,'구':9,'국':8,'권':22,'규':9,'근':14,'금':8,'기':8,'길':6,'나':6,
+  '남':9,'내':5,'녀':6,'년':6,'노':5,'누':5,'다':3,'단':9,'달':12,'담':9,
+  '대':3,'덕':15,'도':7,'동':8,'두':7,'라':7,'란':8,'랑':10,'래':8,'련':12,
+  '령':8,'로':7,'론':8,'룡':11,'류':11,'름':8,'리':7,'린':8,'마':3,'만':15,
+  '명':8,'모':4,'목':4,'무':4,'문':4,'미':6,'민':5,'박':7,'배':8,'백':5,
+  '범':5,'병':5,'보':7,'복':9,'봉':8,'부':4,'빛':8,'사':5,'산':3,'상':13,
+  '새':6,'서':6,'석':5,'선':9,'성':7,'세':5,'소':4,'속':7,'송':7,'수':4,
+  '숙':11,'순':10,'슬':13,'승':8,'시':5,'신':4,'심':4,'아':5,'안':6,'애':13,
+  '앤':13,'야':8,'양':7,'어':6,'언':8,'여':6,'연':11,'열':10,'영':8,'예':8,
+  '오':4,'옥':5,'완':7,'용':11,'우':4,'운':12,'원':10,'월':4,'위':7,'유':6,
+  '윤':4,'은':14,'의':13,'이':6,'인':6,'일':1,'임':8,'자':6,'장':11,'재':6,
+  '전':14,'정':8,'제':14,'조':7,'종':8,'준':13,'중':4,'지':6,'진':10,'찬':17,
+  '창':8,'채':11,'천':4,'철':11,'청':8,'초':7,'춘':9,'충':6,'치':8,'탁':8,
+  '태':4,'택':8,'통':11,'하':3,'학':16,'한':5,'해':10,'행':6,'향':10,'헌':16,
+  '혁':16,'현':11,'혜':12,'호':8,'홍':9,'화':7,'환':17,'효':10,'후':9,'훈':10,
+  '휘':12,'희':12,
+};
+
+// 획수 합산 (글자별 획수, 없으면 유니코드 기반 추정)
+function getStrokeSum(name) {
+  let sum = 0;
+  for (const ch of name) {
+    if (획수표[ch] !== undefined) {
+      sum += 획수표[ch];
+    } else {
+      // 한글 유니코드 → 초성 인덱스로 획수 추정 (1~18)
+      const code = ch.charCodeAt(0);
+      if (code >= 0xAC00 && code <= 0xD7A3) {
+        sum += ((code - 0xAC00) >> 10) + 1;  // 초성 인덱스(0~18)+1
+      } else {
+        sum += (code % 17) + 1;
+      }
+    }
+  }
+  return sum;
+}
+
+// 오행 분류 (획수 끝자리 기준: 1·2=목, 3·4=화, 5·6=토, 7·8=금, 9·0=수)
+const 오행이름 = ['목(木)','화(火)','토(土)','금(金)','수(水)'];
+const 오행이모지 = ['🌳','🔥','🌍','💎','💧'];
+function strokeToOhaeng(n) {
+  const r = n % 10;
+  if (r === 1 || r === 2) return 0; // 목
+  if (r === 3 || r === 4) return 1; // 화
+  if (r === 5 || r === 6) return 2; // 토
+  if (r === 7 || r === 8) return 3; // 금
+  return 4;                          // 수
+}
+
+// 원형이정(元亨利貞) — 이름 획수 분할
+function getWonHyungIJeong(name) {
+  const chars = [...name];
+  const strokes = chars.map(c => 획수표[c] ?? ((c.charCodeAt(0) - 0xAC00 >> 10) + 1));
+  // 원격: 성씨 획수, 형격: 성+이름첫자, 이격: 이름 획수 합, 정격: 전체 합
+  const won  = strokes[0] || 0;
+  const hyung = (strokes[0] || 0) + (strokes[1] || 0);
+  const i    = strokes.slice(1).reduce((a, b) => a + b, 0);
+  const jeong = strokes.reduce((a, b) => a + b, 0);
+  return { won, hyung, i, jeong };
+}
+
+// 성명학 종합 시드: 획수합 + 원형이정 + 글자별 코드 조합
+function getNameSeed(name) {
+  const strokes   = getStrokeSum(name);
+  const { won, hyung, i, jeong } = getWonHyungIJeong(name);
+  // 각 수치를 서로 다른 소수로 곱해 충분히 분산
+  return Math.abs(
+    strokes * 7919 +
+    won     * 6271 +
+    hyung   * 5381 +
+    i       * 4463 +
+    jeong   * 3571 +
+    hashCode(name) * 1009
+  );
+}
+
+// 성명학 총평 메시지 (획수 끝자리별)
+const 성명총평 = [
+  '이름에 수(水)의 기운이 흘러 지혜롭고 유연한 에너지가 가득합니다.',  // 0(수)
+  '이름에 목(木)의 기운이 넘쳐 성장과 발전의 에너지가 충만합니다.',   // 1(목)
+  '이름에 목(木)의 기운이 담겨 따뜻하고 생명력 넘치는 기운이 흐릅니다.',// 2(목)
+  '이름에 화(火)의 기운이 빛나 열정과 창의력이 폭발하는 이름입니다.', // 3(화)
+  '이름에 화(火)의 기운이 타올라 카리스마와 리더십이 빛납니다.',       // 4(화)
+  '이름에 토(土)의 기운이 자리해 안정과 신뢰의 에너지가 가득합니다.', // 5(토)
+  '이름에 토(土)의 기운이 깃들어 풍요롭고 든든한 복이 담겼습니다.',   // 6(토)
+  '이름에 금(金)의 기운이 빛나 강인하고 귀한 기운이 흐릅니다.',       // 7(금)
+  '이름에 금(金)의 기운이 담겨 재물과 성공의 기운이 충만합니다.',      // 8(금)
+  '이름에 수(水)의 기운이 흘러 총명하고 깊은 지혜가 넘칩니다.',       // 9(수)
+];
+
 function getStar(month, day) {
   const md = month * 100 + day;
   if (md >= 1222 || md <= 119) return 0;
@@ -589,22 +726,39 @@ function showFortune() {
   if (!name)  { alert('이름을 입력해 주세요! 😊'); return; }
   if (!year)  { alert('생년월일을 선택해 주세요! 🎂'); return; }
 
-  const seed = hashCode(name + year + month + day);
+  // ── 시드 계산 ──
+  // birthSeed: 생년월일 기반 (사주·별자리 고정값에 사용)
+  // nameSeed:  성명학 기반 (이름이 다르면 확실히 달라짐)
+  // blendSeed: 두 시드를 혼합 → 운세 문구·점수·행운 아이템 결정
+  const birthSeed = hashCode(String(year) + String(month) + String(day));
+  const nameSeed  = getNameSeed(name);
+  const blendSeed = Math.abs(birthSeed * 2654435761 ^ nameSeed * 2246822519) >>> 0;
+
   const gz   = getGanzhi(year);
   const oh   = getOhaeng(year);
   const star = 별자리[getStar(month, day)];
 
+  // ── 성명학 분석 ──
+  const strokes     = getStrokeSum(name);
+  const wohj        = getWonHyungIJeong(name);
+  const nameOhaengIdx = strokeToOhaeng(strokes);
+  const nameOhaeng  = 오행이름[nameOhaengIdx];
+  const nameOhaengIcon = 오행이모지[nameOhaengIdx];
+  const 성명평      = 성명총평[strokes % 10];
+
+  // ── 운세 점수 (blendSeed 기반 → 이름+생년월일 둘 다 달라야 달라짐) ──
   const scores = {
-    총운:   { v: 4 + (seed % 2),        full: true  },
-    애정운: { v: 4 + ((seed >> 1) % 2), full: false },
-    재물운: { v: 4 + ((seed >> 2) % 2), full: false },
-    건강운: { v: 4 + ((seed >> 3) % 2), full: false },
-    직업운: { v: 4 + ((seed >> 4) % 2), full: false },
+    총운:   { v: 4 + (blendSeed % 2),          full: true  },
+    애정운: { v: 4 + ((blendSeed >> 3)  % 2),  full: false },
+    재물운: { v: 4 + ((blendSeed >> 6)  % 2),  full: false },
+    건강운: { v: 4 + ((blendSeed >> 9)  % 2),  full: false },
+    직업운: { v: 4 + ((blendSeed >> 12) % 2),  full: false },
   };
 
-  const luckColor = pick(행운색,   seed >> 5);
-  const luckNum   = pick(행운숫자, seed >> 6);
-  const luckDir   = pick(행운방향, seed >> 7);
+  // ── 행운 아이템 (nameSeed와 birthSeed를 교차 사용) ──
+  const luckColor = pick(행운색,   nameSeed  ^ (birthSeed >> 4));
+  const luckNum   = pick(행운숫자, birthSeed ^ (nameSeed  >> 5));
+  const luckDir   = pick(행운방향, nameSeed  ^ (birthSeed >> 7));
 
   const html = `
     <div class="result-header">
@@ -639,42 +793,70 @@ function showFortune() {
       </div>
     </div>
 
-    <p class="section-title">— 오늘의 운세 —</p>
+    <p class="section-title">— 성명학 분석 —</p>
+
+    <div class="name-analysis">
+      <div class="name-analysis-top">
+        <div class="na-item">
+          <span class="na-icon">${nameOhaengIcon}</span>
+          <span class="na-label">이름 오행</span>
+          <span class="na-val">${nameOhaeng}</span>
+        </div>
+        <div class="na-item">
+          <span class="na-icon">🔢</span>
+          <span class="na-label">총 획수</span>
+          <span class="na-val">${strokes}획</span>
+        </div>
+        <div class="na-item">
+          <span class="na-icon">⭐</span>
+          <span class="na-label">정격수</span>
+          <span class="na-val">${wohj.jeong}수</span>
+        </div>
+        <div class="na-item">
+          <span class="na-icon">🏛️</span>
+          <span class="na-label">원·형·이·정</span>
+          <span class="na-val">${wohj.won}·${wohj.hyung}·${wohj.i}·${wohj.jeong}</span>
+        </div>
+      </div>
+      <div class="na-comment">${성명평}</div>
+    </div>
+
+    <p class="section-title" style="margin-top:18px">— 오늘의 운세 —</p>
 
     <div class="fortune-list">
       <div class="fortune-item total">
         <span class="fortune-emoji">🌟</span>
         <div class="fortune-text-wrap">
           <div class="fortune-label">총운(總運)</div>
-          <div class="fortune-text">${pick(총운문구, seed)}</div>
+          <div class="fortune-text">${pick(총운문구, blendSeed)}</div>
         </div>
       </div>
       <div class="fortune-item love">
         <span class="fortune-emoji">💕</span>
         <div class="fortune-text-wrap">
           <div class="fortune-label">애정운</div>
-          <div class="fortune-text">${pick(애정문구, seed >> 8)}</div>
+          <div class="fortune-text">${pick(애정문구, blendSeed ^ nameSeed)}</div>
         </div>
       </div>
       <div class="fortune-item money">
         <span class="fortune-emoji">💰</span>
         <div class="fortune-text-wrap">
           <div class="fortune-label">재물운</div>
-          <div class="fortune-text">${pick(재물문구, seed >> 10)}</div>
+          <div class="fortune-text">${pick(재물문구, blendSeed ^ (nameSeed >> 2))}</div>
         </div>
       </div>
       <div class="fortune-item health">
         <span class="fortune-emoji">🌿</span>
         <div class="fortune-text-wrap">
           <div class="fortune-label">건강운</div>
-          <div class="fortune-text">${pick(건강문구, seed >> 12)}</div>
+          <div class="fortune-text">${pick(건강문구, blendSeed ^ (nameSeed >> 4))}</div>
         </div>
       </div>
       <div class="fortune-item career">
         <span class="fortune-emoji">🏆</span>
         <div class="fortune-text-wrap">
           <div class="fortune-label">직업운</div>
-          <div class="fortune-text">${pick(직업문구, seed >> 14)}</div>
+          <div class="fortune-text">${pick(직업문구, blendSeed ^ (nameSeed >> 6))}</div>
         </div>
       </div>
     </div>
