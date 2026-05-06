@@ -3,150 +3,145 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-  <meta name="theme-color" content="#0d0221" />
-  <title>오늘의 운세 🔮</title>
+  <meta name="theme-color" content="#fff0f8" />
+  <title>✨ 오늘의 운세</title>
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600;700&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&display=swap');
 
     :root {
-      --purple: #a97ef5;
-      --gold:   #f9d976;
-      --pink:   #f39f86;
-      --bg:     #0d0221;
-      --card:   rgba(255,255,255,0.05);
-      --border: rgba(255,255,255,0.12);
-      --text:   #f0e6ff;
-      --muted:  #a991cc;
-      --safe-bottom: env(safe-area-inset-bottom, 0px);
+      --pink:    #ff7eb3;
+      --purple:  #b17afe;
+      --blue:    #74b9ff;
+      --mint:    #55efc4;
+      --yellow:  #ffeaa7;
+      --orange:  #ffb347;
+      --bg:      #fff0f8;
+      --white:   #ffffff;
+      --text:    #3d2c5e;
+      --muted:   #9b8bb4;
       --safe-top:    env(safe-area-inset-top, 0px);
+      --safe-bottom: env(safe-area-inset-bottom, 0px);
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
-
     html { scroll-behavior: smooth; }
 
     body {
       min-height: 100dvh;
-      background: linear-gradient(160deg, #0d0221 0%, #1a0533 45%, #0d1b4b 100%);
-      font-family: 'Noto Serif KR', serif;
+      background: linear-gradient(180deg, #ffe4f3 0%, #f0e6ff 40%, #e4f0ff 100%);
+      font-family: 'Noto Sans KR', sans-serif;
       color: var(--text);
-      padding: calc(var(--safe-top) + 24px) 16px calc(var(--safe-bottom) + 32px);
+      padding: calc(var(--safe-top) + 20px) 16px calc(var(--safe-bottom) + 40px);
       overflow-x: hidden;
     }
 
-    /* 별 배경 */
-    body::before {
+    /* 배경 동글뱅이 장식 */
+    body::before, body::after {
       content: '';
       position: fixed;
-      inset: 0;
-      background-image:
-        radial-gradient(1px 1px at 8%  12%, #fff 0%, transparent 100%),
-        radial-gradient(1px 1px at 23% 38%, #fff 0%, transparent 100%),
-        radial-gradient(1px 1px at 48%  8%, #fff 0%, transparent 100%),
-        radial-gradient(1px 1px at 68% 28%, #fff 0%, transparent 100%),
-        radial-gradient(1px 1px at 83% 58%, #fff 0%, transparent 100%),
-        radial-gradient(1px 1px at 13% 68%, #fff 0%, transparent 100%),
-        radial-gradient(1px 1px at 38% 78%, #fff 0%, transparent 100%),
-        radial-gradient(1px 1px at 58% 53%, #fff 0%, transparent 100%),
-        radial-gradient(1px 1px at 88% 18%, #fff 0%, transparent 100%),
-        radial-gradient(1px 1px at  4% 88%, #fff 0%, transparent 100%),
-        radial-gradient(1px 1px at 55% 92%, #fff 0%, transparent 100%),
-        radial-gradient(1px 1px at 77% 44%, #fff 0%, transparent 100%),
-        radial-gradient(1.5px 1.5px at 33% 23%, #ffe8a3 0%, transparent 100%),
-        radial-gradient(1.5px 1.5px at 73% 73%, #ffe8a3 0%, transparent 100%),
-        radial-gradient(1.5px 1.5px at 53% 43%, #c8a8ff 0%, transparent 100%),
-        radial-gradient(1.5px 1.5px at 18% 55%, #c8a8ff 0%, transparent 100%),
-        radial-gradient(1.5px 1.5px at 92% 82%, #ffe8a3 0%, transparent 100%);
+      border-radius: 50%;
       pointer-events: none;
       z-index: 0;
     }
+    body::before {
+      width: 300px; height: 300px;
+      top: -80px; right: -80px;
+      background: radial-gradient(circle, rgba(255,126,179,0.18) 0%, transparent 70%);
+    }
+    body::after {
+      width: 260px; height: 260px;
+      bottom: -60px; left: -60px;
+      background: radial-gradient(circle, rgba(116,185,255,0.2) 0%, transparent 70%);
+    }
 
-    /* ── 레이아웃 ── */
     .container {
       position: relative;
       z-index: 1;
       width: 100%;
-      max-width: 480px;
+      max-width: 460px;
       margin: 0 auto;
     }
 
     /* ── 타이틀 ── */
-    .title-area {
-      text-align: center;
-      margin-bottom: 28px;
-    }
+    .title-area { text-align: center; margin-bottom: 24px; }
 
     .title-icon {
-      font-size: 56px;
+      font-size: 64px;
       display: block;
-      margin-bottom: 10px;
-      animation: float 3.2s ease-in-out infinite;
       line-height: 1;
+      margin-bottom: 12px;
+      animation: wiggle 2.4s ease-in-out infinite;
+      filter: drop-shadow(0 4px 12px rgba(255,126,179,0.4));
     }
 
-    @keyframes float {
-      0%, 100% { transform: translateY(0) rotate(-3deg); }
-      50%       { transform: translateY(-10px) rotate(3deg); }
+    @keyframes wiggle {
+      0%,100% { transform: rotate(-8deg) scale(1);   }
+      25%      { transform: rotate(8deg)  scale(1.08); }
+      50%      { transform: rotate(-4deg) scale(1.04); }
+      75%      { transform: rotate(6deg)  scale(1.06); }
     }
 
     h1 {
-      font-size: clamp(22px, 6vw, 30px);
-      font-weight: 700;
-      background: linear-gradient(90deg, var(--gold), var(--pink), #d98cf9);
+      font-size: clamp(24px, 7vw, 32px);
+      font-weight: 900;
+      background: linear-gradient(135deg, #ff7eb3, #b17afe, #74b9ff);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
-      letter-spacing: 5px;
+      letter-spacing: 3px;
+      line-height: 1.2;
     }
 
     .subtitle {
       margin-top: 6px;
-      font-size: 12px;
+      font-size: 13px;
       color: var(--muted);
-      letter-spacing: 3px;
+      letter-spacing: 2px;
+      font-weight: 500;
     }
 
     /* ── 입력 카드 ── */
     .card {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 24px;
+      background: var(--white);
+      border-radius: 28px;
       padding: 28px 20px 24px;
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
+      box-shadow: 0 8px 32px rgba(177,122,254,0.15), 0 2px 8px rgba(0,0,0,0.06);
+      border: 2px solid rgba(255,126,179,0.15);
     }
 
-    .form-group { margin-bottom: 18px; }
+    .form-group { margin-bottom: 20px; }
 
     label {
-      display: block;
-      font-size: 12px;
-      color: #c8b8e8;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--purple);
       margin-bottom: 8px;
-      letter-spacing: 1.5px;
+      letter-spacing: 0.5px;
     }
 
-    /* 이름 입력 */
     input[type="text"] {
       width: 100%;
-      padding: 14px 16px;
-      background: rgba(255,255,255,0.07);
-      border: 1px solid rgba(255,255,255,0.18);
-      border-radius: 14px;
+      padding: 14px 18px;
+      background: #faf7ff;
+      border: 2px solid #e8d8ff;
+      border-radius: 16px;
       color: var(--text);
-      font-size: 16px;          /* 16px 미만이면 iOS에서 자동 확대됨 */
+      font-size: 16px;
       font-family: inherit;
+      font-weight: 500;
       outline: none;
-      transition: border-color 0.25s, background 0.25s;
+      transition: border-color 0.2s, box-shadow 0.2s;
       -webkit-appearance: none;
     }
-
+    input[type="text"]::placeholder { color: #c9b8e8; }
     input[type="text"]:focus {
       border-color: var(--purple);
-      background: rgba(169,126,245,0.12);
+      box-shadow: 0 0 0 4px rgba(177,122,254,0.12);
     }
 
-    /* 날짜 — 년/월/일 select 3분할 */
     .date-row {
       display: grid;
       grid-template-columns: 2fr 1fr 1fr;
@@ -155,87 +150,88 @@
 
     select {
       width: 100%;
-      padding: 14px 10px;
-      background: rgba(255,255,255,0.07);
-      border: 1px solid rgba(255,255,255,0.18);
-      border-radius: 14px;
+      padding: 14px 8px;
+      background: #faf7ff;
+      border: 2px solid #e8d8ff;
+      border-radius: 16px;
       color: var(--text);
-      font-size: 15px;
+      font-size: 14px;
       font-family: inherit;
+      font-weight: 500;
       outline: none;
       cursor: pointer;
       -webkit-appearance: none;
       appearance: none;
       text-align: center;
-      transition: border-color 0.25s, background 0.25s;
+      transition: border-color 0.2s, box-shadow 0.2s;
     }
-
     select:focus {
       border-color: var(--purple);
-      background: rgba(169,126,245,0.12);
+      box-shadow: 0 0 0 4px rgba(177,122,254,0.12);
     }
+    select option { background: #fff; color: var(--text); }
 
-    select option { background: #1a0533; color: var(--text); }
-
-    /* 버튼 */
     .btn {
       width: 100%;
-      padding: 16px;
-      background: linear-gradient(135deg, #7b2ff7, #e040fb);
+      padding: 17px;
+      background: linear-gradient(135deg, #ff7eb3, #b17afe);
       border: none;
-      border-radius: 16px;
+      border-radius: 18px;
       color: #fff;
       font-size: 17px;
       font-family: inherit;
-      font-weight: 700;
-      letter-spacing: 3px;
+      font-weight: 900;
+      letter-spacing: 2px;
       cursor: pointer;
-      transition: filter 0.2s, transform 0.15s;
-      margin-top: 6px;
+      transition: transform 0.15s, filter 0.15s, box-shadow 0.15s;
+      margin-top: 4px;
       touch-action: manipulation;
-      min-height: 54px;          /* 터치 최소 권장 크기 */
+      min-height: 56px;
+      box-shadow: 0 6px 20px rgba(255,126,179,0.35);
     }
+    .btn:hover  { filter: brightness(1.06); box-shadow: 0 8px 24px rgba(255,126,179,0.45); }
+    .btn:active { transform: scale(0.96); filter: brightness(0.97); box-shadow: none; }
 
-    .btn:hover  { filter: brightness(1.12); }
-    .btn:active { transform: scale(0.97); filter: brightness(0.95); }
-
-    /* ── 결과 영역 ── */
-    #result { display: none; margin-top: 24px; }
+    /* ── 결과 ── */
+    #result { display: none; margin-top: 20px; }
 
     .result-card {
-      background: var(--card);
-      border: 1px solid rgba(169,126,245,0.3);
-      border-radius: 24px;
-      padding: 24px 18px 28px;
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      animation: slideUp 0.5s cubic-bezier(.22,.68,0,1.2);
+      background: var(--white);
+      border-radius: 28px;
+      padding: 26px 18px 30px;
+      box-shadow: 0 8px 32px rgba(177,122,254,0.15), 0 2px 8px rgba(0,0,0,0.06);
+      border: 2px solid rgba(255,126,179,0.15);
+      animation: popIn 0.45s cubic-bezier(.34,1.56,.64,1);
     }
 
-    @keyframes slideUp {
-      from { opacity: 0; transform: translateY(24px) scale(0.97); }
-      to   { opacity: 1; transform: translateY(0)    scale(1);    }
+    @keyframes popIn {
+      from { opacity: 0; transform: scale(0.88) translateY(16px); }
+      to   { opacity: 1; transform: scale(1)    translateY(0); }
     }
 
     /* 결과 헤더 */
     .result-header {
       text-align: center;
-      padding-bottom: 18px;
-      border-bottom: 1px solid rgba(255,255,255,0.08);
       margin-bottom: 20px;
     }
 
-    .result-header .rname {
-      font-size: clamp(18px, 5vw, 22px);
-      font-weight: 700;
-      color: var(--gold);
+    .result-header .name-badge {
+      display: inline-block;
+      background: linear-gradient(135deg, #ffb3d4, #d4aaff);
+      color: #fff;
+      font-size: 18px;
+      font-weight: 900;
+      padding: 8px 22px;
+      border-radius: 99px;
+      letter-spacing: 1px;
+      margin-bottom: 8px;
+      box-shadow: 0 4px 12px rgba(255,126,179,0.3);
     }
 
     .result-header .rmeta {
       font-size: 13px;
       color: var(--muted);
-      margin-top: 5px;
-      letter-spacing: 1px;
+      letter-spacing: 0.5px;
     }
 
     /* 사주 간지 */
@@ -243,86 +239,107 @@
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       gap: 8px;
-      margin-bottom: 16px;
+      margin-bottom: 14px;
     }
 
     .pillar {
       text-align: center;
-      background: rgba(169,126,245,0.13);
-      border: 1px solid rgba(169,126,245,0.28);
-      border-radius: 14px;
-      padding: 12px 8px;
+      background: linear-gradient(135deg, #ffeef8, #f3eaff);
+      border: 2px solid rgba(255,126,179,0.2);
+      border-radius: 18px;
+      padding: 12px 6px;
     }
-
-    .pillar-label { font-size: 10px; color: var(--muted); letter-spacing: 0.5px; margin-bottom: 6px; }
-    .pillar-char  { font-size: 24px; color: #f0d9ff; font-weight: 700; line-height: 1; }
-    .pillar-sub   { font-size: 11px; color: #c8a8ff; margin-top: 4px; }
+    .pillar-label { font-size: 10px; color: var(--muted); font-weight: 700; margin-bottom: 6px; letter-spacing: 0.5px; }
+    .pillar-char  { font-size: 26px; line-height: 1; }
+    .pillar-sub   { font-size: 11px; color: var(--purple); margin-top: 4px; font-weight: 700; }
 
     /* 별자리 */
     .zodiac-row {
       display: flex;
       align-items: center;
       gap: 14px;
-      background: rgba(255,255,255,0.04);
-      border-radius: 14px;
-      padding: 14px;
+      background: linear-gradient(135deg, #fff7e6, #fff0f8);
+      border: 2px solid rgba(255,179,71,0.25);
+      border-radius: 18px;
+      padding: 14px 16px;
       margin-bottom: 18px;
     }
-
-    .zodiac-icon { font-size: 38px; flex-shrink: 0; }
-    .zodiac-info .sign      { font-size: 15px; font-weight: 700; color: #f0d9ff; }
+    .zodiac-icon { font-size: 40px; flex-shrink: 0; }
+    .zodiac-info .sign      { font-size: 15px; font-weight: 900; color: var(--text); }
+    .zodiac-info .sign-date { font-size: 11px; color: var(--orange); font-weight: 700; margin-top: 2px; }
     .zodiac-info .sign-desc { font-size: 12px; color: var(--muted); margin-top: 3px; line-height: 1.5; }
 
     /* 운세 섹션 */
-    .fortune-section { margin-bottom: 16px; }
-
-    .fortune-section h3 {
-      font-size: 13px;
-      color: var(--gold);
+    .section-title {
+      font-size: 11px;
+      font-weight: 900;
+      color: var(--muted);
       letter-spacing: 2px;
-      margin-bottom: 8px;
-      display: flex;
-      align-items: center;
-      gap: 6px;
+      text-align: center;
+      margin: 18px 0 12px;
     }
 
-    .fortune-section p {
-      font-size: 14px;
-      line-height: 2;
-      color: #ddd0f5;
+    .fortune-list { display: flex; flex-direction: column; gap: 10px; }
+
+    .fortune-item {
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+      background: #faf8ff;
+      border-radius: 18px;
+      padding: 14px 14px;
+      border-left: 4px solid transparent;
+    }
+    .fortune-item.love   { border-color: #ff7eb3; background: #fff5f9; }
+    .fortune-item.money  { border-color: #ffd32a; background: #fffbf0; }
+    .fortune-item.health { border-color: #55efc4; background: #f0fff9; }
+    .fortune-item.career { border-color: #74b9ff; background: #f0f8ff; }
+    .fortune-item.total  { border-color: var(--purple); background: #f8f4ff; }
+
+    .fortune-emoji { font-size: 26px; flex-shrink: 0; margin-top: 1px; }
+
+    .fortune-text-wrap { flex: 1; }
+    .fortune-label {
+      font-size: 12px;
+      font-weight: 900;
+      margin-bottom: 4px;
+      letter-spacing: 0.5px;
+    }
+    .fortune-item.love   .fortune-label { color: #ff7eb3; }
+    .fortune-item.money  .fortune-label { color: #e6a817; }
+    .fortune-item.health .fortune-label { color: #00b894; }
+    .fortune-item.career .fortune-label { color: #0984e3; }
+    .fortune-item.total  .fortune-label { color: var(--purple); }
+
+    .fortune-text {
+      font-size: 13px;
+      line-height: 1.8;
+      color: #5a4a7a;
       word-break: keep-all;
     }
 
-    .divider {
-      height: 1px;
-      background: rgba(255,255,255,0.07);
-      margin: 18px 0;
-    }
+    /* 점수 그리드 */
+    .score-section { margin-top: 18px; }
 
-    /* 점수 — 모바일에서 2열 그리드 */
     .score-grid {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
       gap: 8px;
-      margin-top: 4px;
     }
-
-    /* 총운은 두 칸 차지 */
     .score-item.full { grid-column: 1 / -1; }
 
     .score-item {
+      background: linear-gradient(135deg, #ffeef8, #f3eaff);
+      border-radius: 16px;
+      padding: 12px 10px;
       text-align: center;
-      background: rgba(255,255,255,0.05);
-      border-radius: 14px;
-      padding: 12px 8px;
     }
-
-    .s-label { font-size: 11px; color: var(--muted); letter-spacing: 1px; }
-    .s-val   { font-size: 22px; font-weight: 700; margin-top: 4px; }
-    .s-bar   {
-      height: 5px;
+    .s-label { font-size: 11px; color: var(--muted); font-weight: 700; letter-spacing: 0.5px; }
+    .s-val   { font-size: 20px; font-weight: 900; margin-top: 3px; }
+    .s-bar {
+      height: 6px;
+      background: rgba(177,122,254,0.15);
       border-radius: 99px;
-      background: rgba(255,255,255,0.1);
       margin: 6px auto 0;
       width: 80%;
       overflow: hidden;
@@ -330,11 +347,10 @@
     .s-bar-fill {
       height: 100%;
       border-radius: 99px;
-      background: linear-gradient(90deg, var(--purple), var(--gold));
-      transition: width 0.8s cubic-bezier(.22,.68,0,1.2);
+      background: linear-gradient(90deg, #ff7eb3, #b17afe);
     }
 
-    /* 행운 아이템 — 세로 카드 */
+    /* 행운 아이템 */
     .lucky-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
@@ -346,53 +362,63 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 6px;
-      background: rgba(249,217,118,0.07);
-      border: 1px solid rgba(249,217,118,0.18);
-      border-radius: 14px;
-      padding: 14px 8px;
+      gap: 5px;
+      background: linear-gradient(135deg, #fffde7, #fff8f0);
+      border: 2px solid rgba(255,179,71,0.25);
+      border-radius: 18px;
+      padding: 14px 6px;
       text-align: center;
     }
-
-    .lucky-item .l-icon  { font-size: 22px; }
-    .lucky-item .l-label { font-size: 10px; color: var(--gold); letter-spacing: 0.5px; }
-    .lucky-item .l-val   { font-size: 14px; font-weight: 700; color: var(--text); word-break: keep-all; }
+    .l-icon  { font-size: 24px; }
+    .l-label { font-size: 10px; color: var(--orange); font-weight: 900; letter-spacing: 0.3px; }
+    .l-val   { font-size: 13px; font-weight: 700; color: var(--text); word-break: keep-all; }
 
     /* 마무리 메시지 */
     .final-msg {
+      margin-top: 20px;
+      background: linear-gradient(135deg, #ff7eb3, #b17afe, #74b9ff);
+      border-radius: 20px;
+      padding: 18px 16px;
       text-align: center;
-      font-size: 15px;
-      color: var(--gold);
+      color: #fff;
+      font-size: 14px;
       font-weight: 700;
-      letter-spacing: 1px;
       line-height: 1.9;
-      padding: 4px 0;
       word-break: keep-all;
+      box-shadow: 0 6px 20px rgba(177,122,254,0.3);
+      letter-spacing: 0.5px;
     }
 
-    /* 다시 보기 버튼 */
+    /* 구분선 */
+    .divider {
+      height: 2px;
+      border-radius: 99px;
+      background: linear-gradient(90deg, transparent, rgba(177,122,254,0.2), transparent);
+      margin: 16px 0;
+    }
+
+    /* 다시 보기 */
     .reset-btn {
       display: block;
       width: 100%;
-      padding: 14px;
-      margin-top: 20px;
-      background: rgba(255,255,255,0.06);
-      border: 1px solid rgba(255,255,255,0.14);
-      border-radius: 14px;
+      padding: 15px;
+      margin-top: 16px;
+      background: var(--white);
+      border: 2px solid #e8d8ff;
+      border-radius: 18px;
       color: var(--muted);
       font-size: 14px;
       font-family: inherit;
-      letter-spacing: 2px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
       cursor: pointer;
       text-align: center;
-      transition: background 0.2s, color 0.2s;
+      transition: border-color 0.2s, color 0.2s, background 0.2s;
       touch-action: manipulation;
     }
+    .reset-btn:hover  { border-color: var(--purple); color: var(--purple); background: #faf4ff; }
+    .reset-btn:active { background: #f3eaff; }
 
-    .reset-btn:hover  { background: rgba(255,255,255,0.1); color: var(--text); }
-    .reset-btn:active { background: rgba(255,255,255,0.04); }
-
-    /* 반응형 — 넓은 화면 */
     @media (min-width: 420px) {
       .score-grid { grid-template-columns: repeat(3, 1fr); }
       .score-item.full { grid-column: auto; }
@@ -406,27 +432,25 @@
   <div class="title-area">
     <span class="title-icon">🔮</span>
     <h1>오늘의 운세</h1>
-    <p class="subtitle">점성술 · 사주 · 팔자</p>
+    <p class="subtitle">✨ 점성술 · 사주 · 팔자 ✨</p>
   </div>
 
   <!-- 입력 폼 -->
   <div class="card" id="formCard">
     <div class="form-group">
-      <label>✦ 이름</label>
+      <label>👤 이름</label>
       <input type="text" id="name" placeholder="이름을 입력하세요"
              maxlength="20" autocomplete="off" inputmode="text" />
     </div>
-
     <div class="form-group">
-      <label>✦ 생년월일</label>
+      <label>🎂 생년월일</label>
       <div class="date-row">
         <select id="byear"  aria-label="출생 연도"></select>
         <select id="bmonth" aria-label="출생 월"></select>
         <select id="bday"   aria-label="출생 일"></select>
       </div>
     </div>
-
-    <button class="btn" onclick="showFortune()">✨ 운세 보기 ✨</button>
+    <button class="btn" onclick="showFortune()">🔮 내 운세 보기</button>
   </div>
 
   <!-- 결과 -->
@@ -436,45 +460,31 @@
   </div>
 
 </div>
-
 <script>
-// ── select 초기화 ────────────────────────────────────────
 (function initDateSelects() {
   const yEl = document.getElementById('byear');
   const mEl = document.getElementById('bmonth');
   const dEl = document.getElementById('bday');
-  const now  = new Date();
 
-  // 연도 (1930 ~ 올해)
-  for (let y = now.getFullYear(); y >= 1930; y--) {
+  for (let y = new Date().getFullYear(); y >= 1930; y--) {
     yEl.add(new Option(y + '년', y));
   }
-  // 기본값: 1990
   yEl.value = 1990;
 
-  // 월
-  for (let m = 1; m <= 12; m++) {
-    mEl.add(new Option(m + '월', m));
-  }
+  for (let m = 1; m <= 12; m++) mEl.add(new Option(m + '월', m));
 
-  // 일
   function fillDays() {
-    const y = +yEl.value, m = +mEl.value;
-    const max = new Date(y, m, 0).getDate();
-    const cur = +dEl.value;
+    const max = new Date(+yEl.value, +mEl.value, 0).getDate();
+    const cur = +dEl.value || 1;
     dEl.innerHTML = '';
-    for (let d = 1; d <= max; d++) {
-      dEl.add(new Option(d + '일', d));
-    }
-    dEl.value = Math.min(cur || 1, max);
+    for (let d = 1; d <= max; d++) dEl.add(new Option(d + '일', d));
+    dEl.value = Math.min(cur, max);
   }
-
   yEl.addEventListener('change', fillDays);
   mEl.addEventListener('change', fillDays);
   fillDays();
 })();
 
-// ── 데이터 ──────────────────────────────────────────────
 const 천간     = ['갑(甲)','을(乙)','병(丙)','정(丁)','무(戊)','기(己)','경(庚)','신(辛)','임(壬)','계(癸)'];
 const 지지     = ['자(子)','축(丑)','인(寅)','묘(卯)','진(辰)','사(巳)','오(午)','미(未)','신(申)','유(酉)','술(戌)','해(亥)'];
 const 띠       = ['쥐','소','호랑이','토끼','용','뱀','말','양','원숭이','닭','개','돼지'];
@@ -535,7 +545,6 @@ const 직업문구 = [
   '하늘이 주신 재능이 만개하여 커다란 성취를 이루는 황금기입니다.',
 ];
 
-// ── 유틸 ────────────────────────────────────────────────
 function pick(arr, seed) { return arr[Math.abs(seed) % arr.length]; }
 
 function hashCode(str) {
@@ -565,37 +574,32 @@ function getGanzhi(year) {
 function getOhaeng(year) {
   const b = ((year - 1984) % 10 + 10) % 10;
   return [['🌳','목(木)'],['🌳','목(木)'],['🔥','화(火)'],['🔥','화(火)'],
-          ['🌍','토(土)'],['🌍','토(土)'],['⚔️','금(金)'],['⚔️','금(金)'],
+          ['🌍','토(土)'],['🌍','토(土)'],['💎','금(金)'],['💎','금(金)'],
           ['💧','수(水)'],['💧','수(水)']][b];
 }
 
-function scoreBar(pct) {
-  return `<div class="s-bar"><div class="s-bar-fill" style="width:${pct}%"></div></div>`;
-}
+const scoreColors = ['#b17afe','#74b9ff','#55c9a0','#f9a825','#ff7eb3'];
 
-const scoreColors = ['#c8a8ff','#a3c4f3','#7be8a0','#f9d976','#ff9d76'];
-
-// ── 메인 ────────────────────────────────────────────────
 function showFortune() {
   const name  = document.getElementById('name').value.trim();
   const year  = +document.getElementById('byear').value;
   const month = +document.getElementById('bmonth').value;
   const day   = +document.getElementById('bday').value;
 
-  if (!name)              { alert('이름을 입력해 주세요.'); return; }
-  if (!year || !month || !day) { alert('생년월일을 선택해 주세요.'); return; }
+  if (!name)  { alert('이름을 입력해 주세요! 😊'); return; }
+  if (!year)  { alert('생년월일을 선택해 주세요! 🎂'); return; }
 
-  const seed  = hashCode(name + year + month + day);
-  const gz    = getGanzhi(year);
-  const oh    = getOhaeng(year);
-  const star  = 별자리[getStar(month, day)];
+  const seed = hashCode(name + year + month + day);
+  const gz   = getGanzhi(year);
+  const oh   = getOhaeng(year);
+  const star = 별자리[getStar(month, day)];
 
   const scores = {
-    총운:   { v: 4 + (seed % 2),         full: true  },
-    애정운: { v: 4 + ((seed >> 1) % 2),  full: false },
-    재물운: { v: 4 + ((seed >> 2) % 2),  full: false },
-    건강운: { v: 4 + ((seed >> 3) % 2),  full: false },
-    직업운: { v: 4 + ((seed >> 4) % 2),  full: false },
+    총운:   { v: 4 + (seed % 2),        full: true  },
+    애정운: { v: 4 + ((seed >> 1) % 2), full: false },
+    재물운: { v: 4 + ((seed >> 2) % 2), full: false },
+    건강운: { v: 4 + ((seed >> 3) % 2), full: false },
+    직업운: { v: 4 + ((seed >> 4) % 2), full: false },
   };
 
   const luckColor = pick(행운색,   seed >> 5);
@@ -604,7 +608,7 @@ function showFortune() {
 
   const html = `
     <div class="result-header">
-      <div class="rname">${name} 님의 운세</div>
+      <div class="name-badge">✨ ${name} 님의 운세 ✨</div>
       <div class="rmeta">${year}년 ${month}월 ${day}일 &nbsp;·&nbsp; ${gz.아이콘} ${gz.띠}띠</div>
     </div>
 
@@ -629,44 +633,65 @@ function showFortune() {
     <div class="zodiac-row">
       <span class="zodiac-icon">${star.icon}</span>
       <div class="zodiac-info">
-        <div class="sign">${star.name} <small style="font-weight:400;font-size:12px;color:#a991cc">${star.dates}</small></div>
+        <div class="sign">${star.name}</div>
+        <div class="sign-date">📅 ${star.dates}</div>
         <div class="sign-desc">${star.trait} 기운을 타고난 별자리</div>
       </div>
     </div>
 
-    <div class="fortune-section">
-      <h3>🌟 총운(總運)</h3>
-      <p>${pick(총운문구, seed)}</p>
-    </div>
-    <div class="divider"></div>
-    <div class="fortune-section">
-      <h3>💕 애정운</h3>
-      <p>${pick(애정문구, seed >> 8)}</p>
-    </div>
-    <div class="fortune-section">
-      <h3>💰 재물운</h3>
-      <p>${pick(재물문구, seed >> 10)}</p>
-    </div>
-    <div class="fortune-section">
-      <h3>🌿 건강운</h3>
-      <p>${pick(건강문구, seed >> 12)}</p>
-    </div>
-    <div class="fortune-section">
-      <h3>🏆 직업운</h3>
-      <p>${pick(직업문구, seed >> 14)}</p>
+    <p class="section-title">— 오늘의 운세 —</p>
+
+    <div class="fortune-list">
+      <div class="fortune-item total">
+        <span class="fortune-emoji">🌟</span>
+        <div class="fortune-text-wrap">
+          <div class="fortune-label">총운(總運)</div>
+          <div class="fortune-text">${pick(총운문구, seed)}</div>
+        </div>
+      </div>
+      <div class="fortune-item love">
+        <span class="fortune-emoji">💕</span>
+        <div class="fortune-text-wrap">
+          <div class="fortune-label">애정운</div>
+          <div class="fortune-text">${pick(애정문구, seed >> 8)}</div>
+        </div>
+      </div>
+      <div class="fortune-item money">
+        <span class="fortune-emoji">💰</span>
+        <div class="fortune-text-wrap">
+          <div class="fortune-label">재물운</div>
+          <div class="fortune-text">${pick(재물문구, seed >> 10)}</div>
+        </div>
+      </div>
+      <div class="fortune-item health">
+        <span class="fortune-emoji">🌿</span>
+        <div class="fortune-text-wrap">
+          <div class="fortune-label">건강운</div>
+          <div class="fortune-text">${pick(건강문구, seed >> 12)}</div>
+        </div>
+      </div>
+      <div class="fortune-item career">
+        <span class="fortune-emoji">🏆</span>
+        <div class="fortune-text-wrap">
+          <div class="fortune-label">직업운</div>
+          <div class="fortune-text">${pick(직업문구, seed >> 14)}</div>
+        </div>
+      </div>
     </div>
 
-    <div class="divider"></div>
+    <p class="section-title" style="margin-top:20px">— 운세 점수 —</p>
 
     <div class="score-grid">
       ${Object.entries(scores).map(([k, {v, full}]) => `
         <div class="score-item${full ? ' full' : ''}">
           <div class="s-label">${k}</div>
           <div class="s-val" style="color:${scoreColors[v-1]}">${v * 20}점</div>
-          ${scoreBar(v * 20)}
+          <div class="s-bar"><div class="s-bar-fill" style="width:${v*20}%"></div></div>
         </div>
       `).join('')}
     </div>
+
+    <p class="section-title" style="margin-top:20px">— 오늘의 행운 아이템 —</p>
 
     <div class="lucky-grid">
       <div class="lucky-item">
@@ -686,11 +711,9 @@ function showFortune() {
       </div>
     </div>
 
-    <div class="divider"></div>
-
     <div class="final-msg">
-      ✨ ${name} 님, 오늘도 빛나는 하루 되세요! ✨<br>
-      행복과 행운이 언제나 함께하길 바랍니다.
+      🌈 ${name} 님, 오늘도 정말 빛나는 하루 보내세요! 🌈<br>
+      행복과 행운이 언제나 함께하길 바랍니다 💖
     </div>
   `;
 
@@ -698,15 +721,12 @@ function showFortune() {
   document.getElementById('resultCard').innerHTML = html;
   resultEl.style.display = 'block';
 
-  // 애니메이션 재실행
   const card = document.querySelector('.result-card');
   card.style.animation = 'none';
-  card.offsetHeight; // reflow
+  card.offsetHeight;
   card.style.animation = '';
 
-  setTimeout(() => {
-    resultEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
-  }, 80);
+  setTimeout(() => resultEl.scrollIntoView({ behavior: 'smooth', block: 'start' }), 80);
 }
 
 function resetForm() {
