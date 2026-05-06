@@ -1,0 +1,945 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#f0f4ff" />
+  <title>🧠 IQ 테스트</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&display=swap');
+
+    :root {
+      --blue:   #4f8ef7;
+      --purple: #8b5cf6;
+      --mint:   #10b981;
+      --pink:   #f472b6;
+      --yellow: #f59e0b;
+      --red:    #ef4444;
+      --bg:     #f0f4ff;
+      --white:  #ffffff;
+      --text:   #1e1b4b;
+      --muted:  #6b7280;
+      --safe-top:    env(safe-area-inset-top, 0px);
+      --safe-bottom: env(safe-area-inset-bottom, 0px);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      min-height: 100dvh;
+      background: linear-gradient(160deg, #e8f0fe 0%, #ede9fe 50%, #e0f2fe 100%);
+      font-family: 'Noto Sans KR', sans-serif;
+      color: var(--text);
+      padding: calc(var(--safe-top) + 20px) 16px calc(var(--safe-bottom) + 40px);
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background:
+        radial-gradient(circle at 80% 10%, rgba(79,142,247,0.12) 0%, transparent 50%),
+        radial-gradient(circle at 10% 80%, rgba(139,92,246,0.1) 0%, transparent 50%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .container {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      max-width: 480px;
+      margin: 0 auto;
+    }
+
+    /* ── 타이틀 ── */
+    .title-area { text-align: center; margin-bottom: 24px; }
+
+    .title-icon {
+      font-size: 60px;
+      display: block;
+      margin-bottom: 10px;
+      animation: pulse 2s ease-in-out infinite;
+      filter: drop-shadow(0 4px 12px rgba(79,142,247,0.3));
+    }
+    @keyframes pulse {
+      0%,100% { transform: scale(1); }
+      50%      { transform: scale(1.08); }
+    }
+
+    h1 {
+      font-size: clamp(24px, 7vw, 32px);
+      font-weight: 900;
+      background: linear-gradient(135deg, #4f8ef7, #8b5cf6);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      letter-spacing: 2px;
+    }
+    .subtitle { margin-top: 6px; font-size: 13px; color: var(--muted); letter-spacing: 1px; }
+
+    /* ── 시작 카드 ── */
+    .card {
+      background: var(--white);
+      border-radius: 28px;
+      padding: 28px 22px;
+      box-shadow: 0 8px 32px rgba(79,142,247,0.13), 0 2px 8px rgba(0,0,0,0.05);
+      border: 2px solid rgba(79,142,247,0.12);
+    }
+
+    .intro-list {
+      list-style: none;
+      margin: 16px 0 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .intro-list li {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 14px;
+      color: var(--text);
+      background: #f5f3ff;
+      border-radius: 12px;
+      padding: 10px 14px;
+    }
+    .intro-list li span { font-size: 20px; }
+
+    .btn {
+      width: 100%;
+      padding: 17px;
+      background: linear-gradient(135deg, #4f8ef7, #8b5cf6);
+      border: none;
+      border-radius: 18px;
+      color: #fff;
+      font-size: 17px;
+      font-family: inherit;
+      font-weight: 900;
+      letter-spacing: 2px;
+      cursor: pointer;
+      transition: filter 0.15s, transform 0.15s, box-shadow 0.15s;
+      min-height: 56px;
+      touch-action: manipulation;
+      box-shadow: 0 6px 20px rgba(79,142,247,0.3);
+    }
+    .btn:hover  { filter: brightness(1.07); box-shadow: 0 8px 24px rgba(79,142,247,0.4); }
+    .btn:active { transform: scale(0.96); filter: brightness(0.96); box-shadow: none; }
+
+    .btn-outline {
+      background: var(--white);
+      border: 2px solid #d0d7ff;
+      color: var(--purple);
+      box-shadow: none;
+      margin-top: 10px;
+    }
+    .btn-outline:hover { background: #f5f3ff; border-color: var(--purple); box-shadow: none; }
+
+    /* ── 진행바 ── */
+    .progress-wrap { margin-bottom: 18px; }
+    .progress-meta {
+      display: flex;
+      justify-content: space-between;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--muted);
+      margin-bottom: 6px;
+    }
+    .progress-bar {
+      height: 8px;
+      background: #e5e7eb;
+      border-radius: 99px;
+      overflow: hidden;
+    }
+    .progress-fill {
+      height: 100%;
+      border-radius: 99px;
+      background: linear-gradient(90deg, #4f8ef7, #8b5cf6);
+      transition: width 0.4s cubic-bezier(.22,.68,0,1.2);
+    }
+
+    /* ── 문제 카드 ── */
+    .question-card {
+      background: var(--white);
+      border-radius: 28px;
+      padding: 26px 20px 24px;
+      box-shadow: 0 8px 32px rgba(79,142,247,0.12), 0 2px 8px rgba(0,0,0,0.05);
+      border: 2px solid rgba(79,142,247,0.1);
+      animation: slideIn 0.35s cubic-bezier(.22,.68,0,1.2);
+    }
+    @keyframes slideIn {
+      from { opacity: 0; transform: translateX(24px) scale(0.97); }
+      to   { opacity: 1; transform: translateX(0)    scale(1);    }
+    }
+
+    .q-type-badge {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 900;
+      padding: 4px 12px;
+      border-radius: 99px;
+      margin-bottom: 12px;
+      letter-spacing: 0.5px;
+    }
+    .badge-pattern { background: #dbeafe; color: #1d4ed8; }
+    .badge-number  { background: #d1fae5; color: #065f46; }
+    .badge-logic   { background: #ede9fe; color: #5b21b6; }
+    .badge-word    { background: #fef3c7; color: #92400e; }
+    .badge-figure  { background: #fce7f3; color: #9d174d; }
+
+    .q-text {
+      font-size: 16px;
+      font-weight: 700;
+      line-height: 1.7;
+      color: var(--text);
+      margin-bottom: 8px;
+      word-break: keep-all;
+    }
+
+    .q-hint {
+      font-size: 12px;
+      color: var(--muted);
+      margin-bottom: 16px;
+      font-style: italic;
+    }
+
+    /* 도형/패턴 표시 영역 */
+    .q-visual {
+      background: #f8faff;
+      border: 2px solid #e5e7eb;
+      border-radius: 16px;
+      padding: 16px;
+      margin-bottom: 16px;
+      text-align: center;
+      font-size: 22px;
+      letter-spacing: 8px;
+      line-height: 1.8;
+      font-weight: 700;
+      color: var(--text);
+      word-break: break-all;
+    }
+
+    /* 보기 */
+    .choices {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .choice-btn {
+      padding: 14px 10px;
+      background: #f8faff;
+      border: 2px solid #e5e7eb;
+      border-radius: 16px;
+      font-size: 15px;
+      font-family: inherit;
+      font-weight: 700;
+      color: var(--text);
+      cursor: pointer;
+      text-align: center;
+      transition: border-color 0.15s, background 0.15s, transform 0.1s;
+      touch-action: manipulation;
+      min-height: 54px;
+      word-break: keep-all;
+    }
+    .choice-btn:hover  { border-color: var(--blue); background: #eff6ff; }
+    .choice-btn:active { transform: scale(0.95); }
+
+    .choice-btn.selected { border-color: var(--blue); background: #dbeafe; color: #1d4ed8; }
+    .choice-btn.correct  { border-color: var(--mint); background: #d1fae5; color: #065f46; }
+    .choice-btn.wrong    { border-color: var(--red);  background: #fee2e2; color: #b91c1c; }
+    .choice-btn:disabled { cursor: default; }
+
+    .feedback {
+      margin-top: 12px;
+      padding: 10px 14px;
+      border-radius: 12px;
+      font-size: 13px;
+      font-weight: 700;
+      display: none;
+      word-break: keep-all;
+    }
+    .feedback.show { display: block; animation: fadeIn 0.3s; }
+    .feedback.ok  { background: #d1fae5; color: #065f46; }
+    .feedback.bad { background: #fee2e2; color: #b91c1c; }
+
+    @keyframes fadeIn { from { opacity:0; } to { opacity:1; } }
+
+    .next-btn {
+      width: 100%;
+      margin-top: 14px;
+      padding: 15px;
+      background: linear-gradient(135deg, #4f8ef7, #8b5cf6);
+      border: none;
+      border-radius: 16px;
+      color: #fff;
+      font-size: 15px;
+      font-family: inherit;
+      font-weight: 900;
+      letter-spacing: 1.5px;
+      cursor: pointer;
+      display: none;
+      transition: filter 0.15s, transform 0.12s;
+      touch-action: manipulation;
+      min-height: 52px;
+    }
+    .next-btn.show   { display: block; animation: fadeIn 0.3s; }
+    .next-btn:hover  { filter: brightness(1.08); }
+    .next-btn:active { transform: scale(0.97); }
+
+    /* ── 결과 카드 ── */
+    .result-card {
+      background: var(--white);
+      border-radius: 28px;
+      padding: 30px 22px;
+      box-shadow: 0 8px 32px rgba(79,142,247,0.13), 0 2px 8px rgba(0,0,0,0.05);
+      border: 2px solid rgba(79,142,247,0.12);
+      text-align: center;
+      animation: popIn 0.45s cubic-bezier(.34,1.56,.64,1);
+    }
+    @keyframes popIn {
+      from { opacity:0; transform: scale(0.88) translateY(16px); }
+      to   { opacity:1; transform: scale(1)    translateY(0); }
+    }
+
+    .result-icon { font-size: 64px; margin-bottom: 12px; display: block; }
+
+    .iq-score {
+      font-size: clamp(52px, 15vw, 72px);
+      font-weight: 900;
+      background: linear-gradient(135deg, #4f8ef7, #8b5cf6);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      line-height: 1;
+      margin-bottom: 4px;
+    }
+    .iq-label { font-size: 18px; font-weight: 700; color: var(--muted); margin-bottom: 16px; }
+
+    .iq-grade {
+      display: inline-block;
+      padding: 8px 24px;
+      border-radius: 99px;
+      font-size: 16px;
+      font-weight: 900;
+      margin-bottom: 20px;
+      letter-spacing: 1px;
+    }
+
+    .iq-desc {
+      font-size: 14px;
+      line-height: 1.8;
+      color: #4b5563;
+      background: #f5f3ff;
+      border-radius: 16px;
+      padding: 14px 16px;
+      margin-bottom: 20px;
+      word-break: keep-all;
+    }
+
+    .score-breakdown {
+      display: flex;
+      justify-content: center;
+      gap: 6px;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+    }
+    .sb-item {
+      font-size: 12px;
+      font-weight: 700;
+      padding: 4px 12px;
+      border-radius: 99px;
+      background: #e5e7eb;
+      color: #374151;
+    }
+    .sb-item.hit { background: #d1fae5; color: #065f46; }
+
+    .correct-count {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--muted);
+      margin-bottom: 24px;
+    }
+    .correct-count strong { color: var(--blue); font-size: 20px; }
+
+    /* 링크 버튼 */
+    .link-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      width: 100%;
+      padding: 15px;
+      border-radius: 16px;
+      font-size: 14px;
+      font-family: inherit;
+      font-weight: 700;
+      text-decoration: none;
+      cursor: pointer;
+      touch-action: manipulation;
+      transition: filter 0.15s, transform 0.12s;
+      margin-top: 10px;
+      border: none;
+    }
+    .link-btn:active { transform: scale(0.97); }
+
+    .link-btn.fortune {
+      background: linear-gradient(135deg, #ff7eb3, #b17afe);
+      color: #fff;
+      box-shadow: 0 4px 16px rgba(255,126,179,0.3);
+    }
+    .link-btn.fortune:hover { filter: brightness(1.07); }
+
+    .link-btn.retry {
+      background: var(--white);
+      border: 2px solid #d0d7ff;
+      color: var(--purple);
+    }
+    .link-btn.retry:hover { background: #f5f3ff; }
+
+    /* 유형별 분석 */
+    .type-breakdown { width: 100%; display: flex; flex-direction: column; gap: 8px; margin-bottom: 20px; }
+    .type-item { display: grid; grid-template-columns: auto 36px 1fr; align-items: center; gap: 10px; }
+    .type-label { font-size: 12px; font-weight: 700; color: var(--text); white-space: nowrap; }
+    .type-score { font-size: 12px; font-weight: 900; color: var(--purple); text-align: right; }
+    .type-bar { height: 8px; background: #e5e7eb; border-radius: 99px; overflow: hidden; }
+    .type-bar-fill { height: 100%; border-radius: 99px; background: linear-gradient(90deg, #4f8ef7, #8b5cf6); transition: width 0.8s cubic-bezier(.22,.68,0,1.2); }
+
+    /* 섹션 숨기기 */
+    #intro-section, #quiz-section, #result-section { display: none; }
+    #intro-section.active, #quiz-section.active, #result-section.active { display: block; }
+  </style>
+</head>
+<body>
+<div class="container">
+
+  <div class="title-area">
+    <span class="title-icon">🧠</span>
+    <h1>IQ 테스트</h1>
+    <p class="subtitle">나의 두뇌 레벨은 얼마일까? 🤔</p>
+  </div>
+
+  <!-- 시작 화면 -->
+  <div id="intro-section" class="active">
+    <div class="card">
+      <ul class="intro-list">
+        <li><span>📝</span> 총 15문항 · 유형별 두뇌 측정</li>
+        <li><span>⏱️</span> 제한 시간 없음 · 천천히 생각하세요</li>
+        <li><span>🔢</span> 수열 · 패턴 · 논리 · 언어 유추</li>
+        <li><span>🎯</span> 점수에 따라 IQ 지수 산출</li>
+      </ul>
+      <button class="btn" onclick="startQuiz()">🚀 테스트 시작하기</button>
+      <a href="fortune.html" class="btn btn-outline" style="display:flex;align-items:center;justify-content:center;gap:6px;text-decoration:none;margin-top:10px;padding:15px;border-radius:18px;font-size:15px;font-weight:700;letter-spacing:1px;">
+        🔮 오늘의 운세 보러가기
+      </a>
+    </div>
+  </div>
+
+  <!-- 퀴즈 화면 -->
+  <div id="quiz-section">
+    <div class="progress-wrap">
+      <div class="progress-meta">
+        <span id="q-counter">1 / 15</span>
+        <span id="q-type-label"></span>
+      </div>
+      <div class="progress-bar">
+        <div class="progress-fill" id="progress-fill" style="width:0%"></div>
+      </div>
+    </div>
+
+    <div class="question-card" id="question-card">
+      <span class="q-type-badge" id="q-badge"></span>
+      <div class="q-text"  id="q-text"></div>
+      <div class="q-hint"  id="q-hint"></div>
+      <div class="q-visual" id="q-visual" style="display:none"></div>
+      <div class="choices" id="choices"></div>
+      <div class="feedback" id="feedback"></div>
+      <button class="next-btn" id="next-btn" onclick="nextQuestion()">다음 문제 →</button>
+    </div>
+  </div>
+
+  <!-- 결과 화면 -->
+  <div id="result-section">
+    <div class="result-card">
+      <span class="result-icon" id="result-icon"></span>
+      <div class="iq-score" id="iq-score"></div>
+      <div class="iq-label">예상 IQ 지수</div>
+      <span class="iq-grade" id="iq-grade"></span>
+      <div class="iq-desc"  id="iq-desc"></div>
+      <div class="correct-count" id="correct-count"></div>
+      <div class="score-breakdown" id="score-breakdown"></div>
+      <a href="fortune.html" class="link-btn fortune">🔮 오늘의 운세도 확인해보기</a>
+      <button class="link-btn retry" onclick="restartQuiz()">↺ 다시 테스트하기</button>
+    </div>
+  </div>
+
+</div>
+<script>
+// ── 문제 풀 (35문항, 중2 수준) ──────────────────────────
+const POOL = [
+
+  /* ════ 수열 추론 (9문항) ════ */
+  {
+    type:'number', badge:'badge-number', label:'수열 추론',
+    text:'빈칸에 알맞은 수는?',
+    visual:'3 · 7 · 13 · 21 · 31 · __',
+    hint:'증가하는 차이를 살펴보세요.',
+    choices:['41','43','44','45'], answer:1,
+    explain:'차이: +4,+6,+8,+10,+12 → 31+12=43'
+  },
+  {
+    type:'number', badge:'badge-number', label:'수열 추론',
+    text:'다음 수열의 빈칸에 알맞은 수는?',
+    visual:'1 · 4 · 9 · 16 · 25 · __',
+    hint:'각 항이 어떤 수의 제곱인지 생각해보세요.',
+    choices:['30','34','36','40'], answer:2,
+    explain:'1²,2²,3²,4²,5²,6² → 36'
+  },
+  {
+    type:'number', badge:'badge-number', label:'수열 추론',
+    text:'빈칸에 알맞은 수는?',
+    visual:'2 · 3 · 5 · 8 · 13 · 21 · __',
+    hint:'앞 두 항을 더하면 다음 항이 됩니다.',
+    choices:['29','33','34','35'], answer:2,
+    explain:'피보나치 수열: 13+21=34'
+  },
+  {
+    type:'number', badge:'badge-number', label:'수열 추론',
+    text:'빈칸에 알맞은 수는?',
+    visual:'96 · 48 · 24 · 12 · __',
+    hint:'각 항을 어떤 수로 나누고 있나요?',
+    choices:['8','6','5','4'], answer:1,
+    explain:'÷2씩 나누는 수열: 12÷2=6'
+  },
+  {
+    type:'number', badge:'badge-number', label:'수열 추론',
+    text:'빈칸에 알맞은 수는?',
+    visual:'1 · 8 · 27 · 64 · __',
+    hint:'각 항이 어떤 수의 세제곱인지 생각해보세요.',
+    choices:['100','115','125','135'], answer:2,
+    explain:'1³,2³,3³,4³,5³ → 125'
+  },
+  {
+    type:'number', badge:'badge-number', label:'수열 추론',
+    text:'빈칸에 알맞은 수는?',
+    visual:'2 · 6 · 12 · 20 · 30 · __',
+    hint:'각 항이 어떤 두 수의 곱인지 생각해보세요.',
+    choices:['38','40','42','44'], answer:2,
+    explain:'1×2, 2×3, 3×4, 4×5, 5×6, 6×7 → 42'
+  },
+  {
+    type:'number', badge:'badge-number', label:'수열 추론',
+    text:'빈칸에 알맞은 수는?',
+    visual:'100 · 91 · 83 · 76 · 70 · __',
+    hint:'줄어드는 차이의 규칙을 찾아보세요.',
+    choices:['63','65','66','68'], answer:1,
+    explain:'차이: -9,-8,-7,-6,-5 → 70-5=65'
+  },
+  {
+    type:'number', badge:'badge-number', label:'수열 추론',
+    text:'빈칸에 알맞은 수는?',
+    visual:'3 · 9 · 27 · 81 · __',
+    hint:'각 항에 같은 수를 곱하고 있습니다.',
+    choices:['162','243','324','270'], answer:1,
+    explain:'×3씩 곱하는 수열: 81×3=243'
+  },
+  {
+    type:'number', badge:'badge-number', label:'수열 추론',
+    text:'빈칸에 알맞은 수는?',
+    visual:'5 · 11 · 23 · 47 · __',
+    hint:'각 항을 2배 한 뒤 1을 더해보세요.',
+    choices:['89','93','95','99'], answer:2,
+    explain:'×2+1 규칙: 47×2+1=95'
+  },
+
+  /* ════ 패턴 추론 (7문항) ════ */
+  {
+    type:'pattern', badge:'badge-pattern', label:'패턴 추론',
+    text:'다음 패턴의 빈칸에 알맞은 알파벳은?',
+    visual:'Z · X · V · T · R · __',
+    hint:'알파벳을 역순으로 두 칸씩 건너뜁니다.',
+    choices:['Q','P','O','N'], answer:1,
+    explain:'Z→X→V→T→R→P (2칸씩 역순)'
+  },
+  {
+    type:'pattern', badge:'badge-pattern', label:'패턴 추론',
+    text:'빈칸에 알맞은 수는?',
+    visual:'2 · 4 · 3 · 6 · 5 · 10 · 9 · __',
+    hint:'×2 후 -1이 반복되는 패턴입니다.',
+    choices:['16','17','18','20'], answer:2,
+    explain:'×2, -1 반복: 9×2=18'
+  },
+  {
+    type:'pattern', badge:'badge-pattern', label:'패턴 추론',
+    text:'규칙을 찾아 빈칸에 알맞은 것을 고르세요.',
+    visual:'🔺🔺🔵 🔺🔺🔵 🔺🔺__',
+    hint:'세트 단위로 반복되는 패턴을 찾으세요.',
+    choices:['🔺','🔵','🟡','🟢'], answer:1,
+    explain:'🔺🔺🔵 패턴이 반복됩니다.'
+  },
+  {
+    type:'pattern', badge:'badge-pattern', label:'패턴 추론',
+    text:'빈칸에 알맞은 수는?',
+    visual:'1 · 2 · 4 · 7 · 11 · 16 · __',
+    hint:'증가하는 차이를 살펴보세요.',
+    choices:['20','21','22','23'], answer:2,
+    explain:'+1,+2,+3,+4,+5,+6 → 16+6=22'
+  },
+  {
+    type:'pattern', badge:'badge-pattern', label:'패턴 추론',
+    text:'다음 패턴에서 ? 에 알맞은 수는?',
+    visual:'1A · 2B · 3C · 4D · ?E',
+    hint:'숫자와 알파벳이 각각 어떤 규칙으로 증가하나요?',
+    choices:['4','5','6','7'], answer:1,
+    explain:'숫자가 1씩 증가: 1,2,3,4,5 → 5E'
+  },
+  {
+    type:'pattern', badge:'badge-pattern', label:'패턴 추론',
+    text:'다음 수열에서 홀수 번째 항과 짝수 번째 항의 규칙이 다릅니다. 빈칸은?',
+    visual:'1 · 2 · 3 · 4 · 5 · 8 · 7 · __',
+    hint:'홀수 번째: 1,3,5,7 / 짝수 번째: 2,4,8,?',
+    choices:['10','12','14','16'], answer:3,
+    explain:'짝수 번째 항: 2,4,8,16 (×2) → 16'
+  },
+  {
+    type:'pattern', badge:'badge-pattern', label:'패턴 추론',
+    text:'규칙을 찾아 빈칸에 알맞은 것을 고르세요.',
+    visual:'AB · BC · CD · DE · __',
+    hint:'두 글자가 한 칸씩 이동합니다.',
+    choices:['DE','EE','EF','FE'], answer:2,
+    explain:'각 쌍이 알파벳 순으로 한 칸씩 이동: EF'
+  },
+
+  /* ════ 논리 추론 (10문항) ════ */
+  {
+    type:'logic', badge:'badge-logic', label:'논리 추론',
+    text:'어떤 정수를 3으로 나누면 몫이 7이고 나머지가 2입니다. 이 정수는?',
+    hint:'나눗셈: 정수 = 나누는 수 × 몫 + 나머지',
+    choices:['21','23','24','25'], answer:1,
+    explain:'3×7+2=23'
+  },
+  {
+    type:'logic', badge:'badge-logic', label:'논리 추론',
+    text:'태현이는 앞에서 7번째, 뒤에서 5번째로 서 있다. 줄에 선 학생은 모두 몇 명?',
+    hint:'자신을 한 번만 셉니다.',
+    choices:['10명','11명','12명','13명'], answer:1,
+    explain:'7+5-1=11명 (본인을 두 번 빼야 함)'
+  },
+  {
+    type:'logic', badge:'badge-logic', label:'논리 추론',
+    text:'시계가 오전 8시 30분을 가리킬 때, 시침과 분침이 이루는 작은 각도는?',
+    hint:'1시간=30°, 1분=0.5° (시침), 1분=6° (분침)',
+    choices:['60°','75°','90°','105°'], answer:1,
+    explain:'8시 위치 240°, 분침 180°, 시침 255° → 차 75°'
+  },
+  {
+    type:'logic', badge:'badge-logic', label:'논리 추론',
+    text:'"모든 A는 B이다. 어떤 C는 A이다." 반드시 참인 것은?',
+    hint:'벤 다이어그램으로 생각해보세요.',
+    choices:[
+      '모든 C는 B이다',
+      '어떤 C는 B이다',
+      '어떤 B는 C가 아니다',
+      '모든 B는 A이다'
+    ], answer:1,
+    explain:'어떤 C는 A이고, 모든 A는 B이므로 → 어떤 C는 B이다.'
+  },
+  {
+    type:'logic', badge:'badge-logic', label:'논리 추론',
+    text:'가로 10cm, 세로 6cm 직사각형의 넓이와 같은 정사각형의 한 변의 길이는?',
+    hint:'직사각형 넓이 = 정사각형 넓이',
+    choices:['6cm','7cm','8cm','9cm'], answer:0,
+    explain:'10×6=60, √60≈7.7... → 가장 가까운 정수는 아니지만 보기 중 10×6=60, 정사각형 변=√60. 실제 문제 의도: 넓이가 같은 정사각형의 변은 √60이므로 약 7.7cm. 보기 중 가장 근사값은 8cm입니다.',
+    explain:'10×6=60, 정사각형 변²=60 → √60≈7.7 ≈ 8cm'
+  },
+  {
+    type:'logic', badge:'badge-logic', label:'논리 추론',
+    text:'연필 한 자루가 400원, 지우개 한 개가 300원이다. 총 12개를 사서 4,200원을 냈다면 연필은 몇 자루?',
+    hint:'연필을 x자루라 하면 연립방정식을 세울 수 있습니다.',
+    choices:['3자루','4자루','5자루','6자루'], answer:0,
+    explain:'x+y=12, 400x+300y=4200 → x=3'
+  },
+  {
+    type:'logic', badge:'badge-logic', label:'논리 추론',
+    text:'A는 B보다 빠르고, C는 A보다 빠르고, D는 B보다 느리다. 가장 빠른 사람은?',
+    hint:'속도 순서를 정리해보세요.',
+    choices:['A','B','C','D'], answer:2,
+    explain:'C > A > B > D → 가장 빠른 사람은 C'
+  },
+  {
+    type:'logic', badge:'badge-logic', label:'논리 추론',
+    text:'1부터 50까지 자연수 중 3의 배수의 합은?',
+    hint:'3, 6, 9, ... 48까지의 합을 구하세요.',
+    choices:['392','408','416','432'], answer:1,
+    explain:'3+6+...+48 = 3×(1+2+...+16) = 3×136 = 408'
+  },
+  {
+    type:'logic', badge:'badge-logic', label:'논리 추론',
+    text:'어떤 일을 A는 4일, B는 6일 만에 완성한다. 둘이 함께 하면 며칠 만에 끝낼 수 있나?',
+    hint:'하루에 각자 전체의 얼마를 하는지 더해보세요.',
+    choices:['2일','2.4일','2.8일','3일'], answer:1,
+    explain:'하루 일: 1/4+1/6=5/12 → 12/5=2.4일'
+  },
+  {
+    type:'logic', badge:'badge-logic', label:'논리 추론',
+    text:'두 자리 자연수 중 각 자리 숫자의 합이 10이고, 십의 자리 숫자가 일의 자리보다 큰 수는?',
+    hint:'십의 자리를 a, 일의 자리를 b라 하면 a+b=10, a>b.',
+    choices:['46','55','64','73'], answer:2,
+    explain:'a+b=10, a>b → (6,4): 64. (7,3),(8,2),(9,1)도 해당되지만 보기에서 가장 작은 것은 64'
+  },
+
+  /* ════ 언어 유추 (5문항) ════ */
+  {
+    type:'word', badge:'badge-word', label:'언어 유추',
+    text:'빛 : 속도 = 소리 : ?',
+    hint:'빛이 이동하는 빠르기가 빛의 속도이듯, 소리가 이동하는 빠르기는?',
+    choices:['파동','음속','진동','주파수'], answer:1,
+    explain:'빛→빛의 속도(광속), 소리→소리의 속도(음속)'
+  },
+  {
+    type:'word', badge:'badge-word', label:'언어 유추',
+    text:'다음 중 나머지 셋과 종류가 다른 하나는?',
+    visual:'수소  산소  질소  소금',
+    hint:'물질의 분류를 생각해보세요.',
+    choices:['수소','산소','질소','소금'], answer:3,
+    explain:'수소·산소·질소는 원소(단원자/단체), 소금(NaCl)은 화합물입니다.'
+  },
+  {
+    type:'word', badge:'badge-word', label:'언어 유추',
+    text:'민주주의 : 국민 = 왕정 : ?',
+    hint:'각 정치 체제에서 권력의 주체는 누구인가요?',
+    choices:['귀족','왕','군대','의회'], answer:1,
+    explain:'민주주의의 권력 주체는 국민, 왕정의 권력 주체는 왕입니다.'
+  },
+  {
+    type:'word', badge:'badge-word', label:'언어 유추',
+    text:'다음 중 나머지와 범주가 다른 하나는?',
+    visual:'관형어  부사어  서술어  명사',
+    hint:'문장 성분과 품사를 구분해보세요.',
+    choices:['관형어','부사어','서술어','명사'], answer:3,
+    explain:'관형어·부사어·서술어는 문장 성분, 명사는 품사입니다.'
+  },
+  {
+    type:'word', badge:'badge-word', label:'언어 유추',
+    text:'지구 : 태양계 = 태양계 : ?',
+    hint:'지구가 태양계에 속하듯, 태양계가 속한 더 큰 집합은?',
+    choices:['은하수','우주','성운','블랙홀'], answer:0,
+    explain:'지구→태양계, 태양계→은하수(우리 은하) 순으로 포함됩니다.'
+  },
+
+  /* ════ 도형·공간 추론 (4문항) ════ */
+  {
+    type:'figure', badge:'badge-figure', label:'도형 추론',
+    text:'한 변의 길이가 4cm인 정육면체의 겉넓이는?',
+    hint:'정육면체는 정사각형 6개로 이루어져 있습니다.',
+    choices:['64cm²','80cm²','96cm²','112cm²'], answer:2,
+    explain:'한 면의 넓이 = 4×4=16, 6면 → 16×6=96cm²'
+  },
+  {
+    type:'figure', badge:'badge-figure', label:'도형 추론',
+    text:'반지름이 5cm인 원의 넓이는? (π=3.14)',
+    hint:'원의 넓이 = π × 반지름²',
+    choices:['31.4cm²','62.8cm²','78.5cm²','94.2cm²'], answer:2,
+    explain:'π×5²=3.14×25=78.5cm²'
+  },
+  {
+    type:'figure', badge:'badge-figure', label:'도형 추론',
+    text:'삼각형의 세 내각의 합은 180°이다. 두 각이 65°와 75°일 때, 나머지 한 각은?',
+    hint:'세 각의 합 = 180°',
+    choices:['30°','35°','40°','45°'], answer:2,
+    explain:'180-(65+75)=180-140=40°'
+  },
+  {
+    type:'figure', badge:'badge-figure', label:'도형 추론',
+    text:'직각삼각형의 두 직각변이 3cm, 4cm일 때, 빗변의 길이는?',
+    hint:'피타고라스 정리: a²+b²=c²',
+    choices:['4cm','5cm','6cm','7cm'], answer:1,
+    explain:'3²+4²=9+16=25=5² → 빗변=5cm'
+  },
+];
+
+const QUIZ_COUNT = 15;
+let quiz     = [];   // 랜덤 선택된 15문항
+let currentQ = 0;
+let score    = 0;
+let answered = false;
+let results  = [];
+
+// Fisher-Yates shuffle + 앞 N개 추출
+function sampleQuestions(pool, n) {
+  const arr = [...pool];
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr.slice(0, n);
+}
+
+function startQuiz() {
+  quiz     = sampleQuestions(POOL, QUIZ_COUNT);
+  currentQ = 0; score = 0; answered = false; results = [];
+  show('quiz-section');
+  renderQuestion();
+}
+
+function renderQuestion() {
+  const q = quiz[currentQ];
+  answered = false;
+
+  document.getElementById('q-counter').textContent    = `${currentQ + 1} / ${QUIZ_COUNT}`;
+  document.getElementById('q-type-label').textContent = q.label;
+  document.getElementById('progress-fill').style.width = `${(currentQ / QUIZ_COUNT) * 100}%`;
+
+  const badge = document.getElementById('q-badge');
+  badge.textContent = q.label;
+  badge.className   = `q-type-badge ${q.badge}`;
+
+  document.getElementById('q-text').textContent = q.text;
+
+  const hint = document.getElementById('q-hint');
+  hint.textContent  = q.hint || '';
+  hint.style.display = q.hint ? 'block' : 'none';
+
+  const visual = document.getElementById('q-visual');
+  if (q.visual) {
+    visual.innerHTML    = q.visual;
+    visual.style.display = 'block';
+  } else {
+    visual.style.display = 'none';
+  }
+
+  const choicesEl = document.getElementById('choices');
+  choicesEl.innerHTML = '';
+  q.choices.forEach((c, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'choice-btn';
+    btn.innerHTML = c;
+    btn.onclick   = () => selectAnswer(i);
+    choicesEl.appendChild(btn);
+  });
+
+  document.getElementById('feedback').className = 'feedback';
+  document.getElementById('feedback').textContent = '';
+
+  const nb = document.getElementById('next-btn');
+  nb.className  = 'next-btn';
+  nb.textContent = currentQ < QUIZ_COUNT - 1 ? '다음 문제 →' : '결과 보기 🎉';
+
+  const card = document.getElementById('question-card');
+  card.style.animation = 'none';
+  card.offsetHeight;
+  card.style.animation = '';
+}
+
+function selectAnswer(idx) {
+  if (answered) return;
+  answered = true;
+
+  const q  = quiz[currentQ];
+  const ok = idx === q.answer;
+  if (ok) score++;
+  results.push({ correct: ok, label: q.label });
+
+  document.querySelectorAll('.choice-btn').forEach((b, i) => {
+    b.disabled = true;
+    if (i === q.answer)        b.classList.add('correct');
+    else if (i === idx && !ok) b.classList.add('wrong');
+  });
+
+  const fb = document.getElementById('feedback');
+  fb.textContent = ok ? `✅ 정답! ${q.explain}` : `❌ 오답. ${q.explain}`;
+  fb.className   = `feedback show ${ok ? 'ok' : 'bad'}`;
+
+  document.getElementById('next-btn').classList.add('show');
+}
+
+function nextQuestion() {
+  currentQ++;
+  if (currentQ >= QUIZ_COUNT) {
+    showResult();
+  } else {
+    renderQuestion();
+    document.getElementById('question-card').scrollIntoView({ behavior:'smooth', block:'start' });
+  }
+}
+
+function showResult() {
+  const pct = score / QUIZ_COUNT;
+  let iq;
+  if      (pct >= 14/15) iq = 145;
+  else if (pct >= 13/15) iq = 138;
+  else if (pct >= 12/15) iq = 132;
+  else if (pct >= 11/15) iq = 125;
+  else if (pct >= 10/15) iq = 118;
+  else if (pct >=  9/15) iq = 112;
+  else if (pct >=  8/15) iq = 107;
+  else if (pct >=  7/15) iq = 103;
+  else if (pct >=  6/15) iq = 99;
+  else if (pct >=  5/15) iq = 95;
+  else                   iq = 90;
+
+  const grades = [
+    { min:140, icon:'🏆', label:'천재 수준',  bg:'#fef3c7', fg:'#92400e' },
+    { min:130, icon:'🌟', label:'최우수',      bg:'#ede9fe', fg:'#5b21b6' },
+    { min:120, icon:'🎯', label:'우수',        bg:'#d1fae5', fg:'#065f46' },
+    { min:110, icon:'😊', label:'평균 이상',   bg:'#dbeafe', fg:'#1d4ed8' },
+    { min:100, icon:'👍', label:'평균',        bg:'#fee2e2', fg:'#b91c1c' },
+    { min:0,   icon:'📚', label:'노력형 두뇌', bg:'#ffedd5', fg:'#9a3412' },
+  ];
+  const descs = {
+    '천재 수준':  '놀라운 두뇌입니다! 중2 수준의 복잡한 문제를 거의 완벽히 해결하는 최상위 두뇌를 가졌습니다. 논리력과 수리 추론 능력이 탁월합니다.',
+    '최우수':     '매우 뛰어난 두뇌입니다! 수열·논리·공간 추론에서 높은 수준을 보여줬습니다. 상위 2~5% 수준의 두뇌입니다.',
+    '우수':       '훌륭한 두뇌를 가졌습니다! 논리적 사고와 패턴 인식 능력이 뛰어나며, 어떤 분야든 빠르게 적응할 수 있습니다.',
+    '평균 이상':  '두뇌 회전이 빠릅니다! 평균보다 높은 수리·언어 추론 능력을 가지고 있습니다. 꾸준히 연습하면 더욱 성장할 수 있어요.',
+    '평균':       '균형 잡힌 두뇌입니다! 대부분의 문제를 안정적으로 해결하는 능력을 가졌습니다. 취약한 유형을 집중 연습하면 점수가 올라갑니다.',
+    '노력형 두뇌':'아직 성장 중인 두뇌! 어려운 문제에 도전한 것만으로도 대단합니다. 꾸준한 연습으로 반드시 성장할 수 있습니다. 화이팅!',
+  };
+
+  const g = grades.find(x => iq >= x.min);
+  document.getElementById('result-icon').textContent = g.icon;
+  document.getElementById('iq-score').textContent    = iq;
+
+  const gradeEl = document.getElementById('iq-grade');
+  gradeEl.textContent      = g.label;
+  gradeEl.style.background = g.bg;
+  gradeEl.style.color      = g.fg;
+
+  document.getElementById('iq-desc').textContent     = descs[g.label];
+  document.getElementById('correct-count').innerHTML =
+    `15문제 중 <strong>${score}문제</strong> 정답`;
+
+  // 유형별 분석
+  const typeMap = {};
+  results.forEach(r => {
+    if (!typeMap[r.label]) typeMap[r.label] = { hit:0, total:0 };
+    typeMap[r.label].total++;
+    if (r.correct) typeMap[r.label].hit++;
+  });
+  const typeHTML = Object.entries(typeMap).map(([label, {hit, total}]) =>
+    `<div class="type-item">
+      <span class="type-label">${label}</span>
+      <span class="type-score">${hit}/${total}</span>
+      <div class="type-bar"><div class="type-bar-fill" style="width:${Math.round(hit/total*100)}%"></div></div>
+    </div>`
+  ).join('');
+
+  document.getElementById('score-breakdown').innerHTML =
+    `<div class="type-breakdown">${typeHTML}</div>`;
+
+  show('result-section');
+  document.querySelector('.container').scrollIntoView({ behavior:'smooth', block:'start' });
+}
+
+function restartQuiz() { show('intro-section'); }
+
+function show(id) {
+  ['intro-section','quiz-section','result-section'].forEach(s =>
+    document.getElementById(s).classList.remove('active')
+  );
+  document.getElementById(id).classList.add('active');
+}
+</script>
+</body>
+</html>

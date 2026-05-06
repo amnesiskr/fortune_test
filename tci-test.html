@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#f0f7ff" />
+  <title>🌈 TCI 기질·성격 검사</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&display=swap');
+
+    :root {
+      --ns:  #f97316; /* 자극추구 - 주황 */
+      --ha:  #8b5cf6; /* 위험회피 - 보라 */
+      --rd:  #ec4899; /* 사회적민감성 - 핑크 */
+      --ps:  #10b981; /* 인내력 - 민트 */
+      --sd:  #3b82f6; /* 자율성 - 파랑 */
+      --co:  #f59e0b; /* 연대감 - 노랑 */
+      --st:  #06b6d4; /* 자기초월 - 청록 */
+      --bg:  #f0f7ff;
+      --white: #ffffff;
+      --text:  #1e293b;
+      --muted: #64748b;
+      --safe-top:    env(safe-area-inset-top, 0px);
+      --safe-bottom: env(safe-area-inset-bottom, 0px);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      min-height: 100dvh;
+      background: linear-gradient(160deg, #e0f2fe 0%, #ede9fe 50%, #fce7f3 100%);
+      font-family: 'Noto Sans KR', sans-serif;
+      color: var(--text);
+      padding: calc(var(--safe-top) + 20px) 16px calc(var(--safe-bottom) + 40px);
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: '';
+      position: fixed; inset: 0;
+      background:
+        radial-gradient(circle at 85% 15%, rgba(59,130,246,0.1) 0%, transparent 50%),
+        radial-gradient(circle at 10% 85%, rgba(236,72,153,0.08) 0%, transparent 50%);
+      pointer-events: none; z-index: 0;
+    }
+
+    .container { position: relative; z-index: 1; width: 100%; max-width: 500px; margin: 0 auto; }
+
+    /* ── 타이틀 ── */
+    .title-area { text-align: center; margin-bottom: 24px; }
+    .title-icon {
+      font-size: 58px; display: block; margin-bottom: 10px; line-height: 1;
+      animation: spin-slow 6s linear infinite;
+      filter: drop-shadow(0 4px 14px rgba(139,92,246,0.3));
+    }
+    @keyframes spin-slow {
+      0%   { transform: rotate(0deg)   scale(1); }
+      25%  { transform: rotate(5deg)   scale(1.06); }
+      75%  { transform: rotate(-5deg)  scale(1.06); }
+      100% { transform: rotate(0deg)   scale(1); }
+    }
+    h1 {
+      font-size: clamp(22px, 6vw, 30px); font-weight: 900;
+      background: linear-gradient(135deg, #8b5cf6, #ec4899, #f97316);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text; letter-spacing: 2px;
+    }
+    .subtitle { margin-top: 6px; font-size: 13px; color: var(--muted); letter-spacing: 1px; }
+
+    /* ── 카드 ── */
+    .card {
+      background: var(--white); border-radius: 28px;
+      padding: 28px 20px 24px;
+      box-shadow: 0 8px 32px rgba(139,92,246,0.12), 0 2px 8px rgba(0,0,0,0.05);
+      border: 2px solid rgba(139,92,246,0.1);
+    }
+
+    .intro-list {
+      list-style: none; margin: 16px 0 22px;
+      display: flex; flex-direction: column; gap: 10px;
+    }
+    .intro-list li {
+      display: flex; align-items: center; gap: 10px;
+      font-size: 13px; color: var(--text);
+      background: #f5f3ff; border-radius: 12px; padding: 10px 14px;
+    }
+    .intro-list li span { font-size: 20px; }
+
+    .trait-chips {
+      display: flex; flex-wrap: wrap; gap: 7px;
+      margin: 0 0 22px;
+    }
+    .chip {
+      display: inline-flex; align-items: center; gap: 5px;
+      font-size: 12px; font-weight: 700; padding: 5px 12px;
+      border-radius: 99px; letter-spacing: 0.3px;
+    }
+    .chip-ns { background:#fff7ed; color:#c2410c; border:1.5px solid #fed7aa; }
+    .chip-ha { background:#f5f3ff; color:#6d28d9; border:1.5px solid #ddd6fe; }
+    .chip-rd { background:#fdf2f8; color:#be185d; border:1.5px solid #fbcfe8; }
+    .chip-ps { background:#ecfdf5; color:#065f46; border:1.5px solid #a7f3d0; }
+    .chip-sd { background:#eff6ff; color:#1d4ed8; border:1.5px solid #bfdbfe; }
+    .chip-co { background:#fffbeb; color:#92400e; border:1.5px solid #fde68a; }
+    .chip-st { background:#ecfeff; color:#155e75; border:1.5px solid #a5f3fc; }
+
+    /* ── 버튼 ── */
+    .btn {
+      width: 100%; padding: 17px;
+      background: linear-gradient(135deg, #8b5cf6, #ec4899);
+      border: none; border-radius: 18px; color: #fff;
+      font-size: 16px; font-family: inherit; font-weight: 900;
+      letter-spacing: 2px; cursor: pointer;
+      transition: filter .15s, transform .15s, box-shadow .15s;
+      min-height: 56px; touch-action: manipulation;
+      box-shadow: 0 6px 20px rgba(139,92,246,0.3);
+    }
+    .btn:hover  { filter: brightness(1.07); }
+    .btn:active { transform: scale(0.96); filter: brightness(0.96); box-shadow: none; }
+
+    /* ── 진행바 ── */
+    .progress-wrap { margin-bottom: 18px; }
+    .progress-meta {
+      display: flex; justify-content: space-between;
+      font-size: 12px; font-weight: 700; color: var(--muted); margin-bottom: 6px;
+    }
+    .progress-bar { height: 8px; background: #e2e8f0; border-radius: 99px; overflow: hidden; }
+    .progress-fill {
+      height: 100%; border-radius: 99px;
+      background: linear-gradient(90deg, #8b5cf6, #ec4899);
+      transition: width .4s cubic-bezier(.22,.68,0,1.2);
+    }
+
+    /* ── 문항 카드 ── */
+    .q-card {
+      background: var(--white); border-radius: 24px;
+      padding: 24px 18px 20px;
+      box-shadow: 0 6px 28px rgba(139,92,246,0.1), 0 2px 6px rgba(0,0,0,0.04);
+      border: 2px solid rgba(139,92,246,0.08);
+      animation: slideIn .35s cubic-bezier(.22,.68,0,1.2);
+    }
+    @keyframes slideIn {
+      from { opacity:0; transform: translateX(20px) scale(.97); }
+      to   { opacity:1; transform: translateX(0)    scale(1);   }
+    }
+
+    .q-number {
+      font-size: 11px; font-weight: 900; color: #a78bfa;
+      letter-spacing: 1px; margin-bottom: 10px;
+    }
+    .q-text {
+      font-size: 16px; font-weight: 700; line-height: 1.75;
+      color: var(--text); margin-bottom: 20px; word-break: keep-all;
+    }
+
+    /* 5점 척도 버튼 */
+    .scale-wrap { display: flex; flex-direction: column; gap: 10px; }
+    .scale-labels {
+      display: flex; justify-content: space-between;
+      font-size: 10px; color: var(--muted); font-weight: 700;
+      padding: 0 2px; margin-bottom: 2px;
+    }
+    .scale-btns { display: flex; gap: 8px; }
+    .scale-btn {
+      flex: 1; padding: 14px 4px;
+      background: #f8faff; border: 2px solid #e2e8f0;
+      border-radius: 14px; cursor: pointer;
+      font-size: 15px; font-family: inherit; font-weight: 900;
+      color: var(--muted); text-align: center;
+      transition: border-color .15s, background .15s, color .15s, transform .1s;
+      touch-action: manipulation; min-height: 52px;
+    }
+    .scale-btn:hover { border-color: #a78bfa; background: #f5f3ff; color: #7c3aed; }
+    .scale-btn:active { transform: scale(0.94); }
+    .scale-btn.sel-1 { border-color:#ddd6fe; background:#ede9fe; color:#6d28d9; }
+    .scale-btn.sel-2 { border-color:#c4b5fd; background:#ddd6fe; color:#5b21b6; }
+    .scale-btn.sel-3 { border-color:#a78bfa; background:#c4b5fd; color:#4c1d95; }
+    .scale-btn.sel-4 { border-color:#8b5cf6; background:#a78bfa; color:#fff; }
+    .scale-btn.sel-5 { border-color:#7c3aed; background:#8b5cf6; color:#fff; }
+    .scale-btn:disabled { cursor: default; opacity: .7; }
+
+    .next-btn {
+      width: 100%; margin-top: 16px; padding: 15px;
+      background: linear-gradient(135deg, #8b5cf6, #ec4899);
+      border: none; border-radius: 16px; color: #fff;
+      font-size: 15px; font-family: inherit; font-weight: 900;
+      letter-spacing: 1.5px; cursor: pointer;
+      display: none; transition: filter .15s, transform .12s;
+      touch-action: manipulation; min-height: 52px;
+    }
+    .next-btn.show   { display: block; animation: fadeUp .3s; }
+    .next-btn:hover  { filter: brightness(1.08); }
+    .next-btn:active { transform: scale(0.97); }
+    @keyframes fadeUp { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:translateY(0); } }
+
+    /* ── 결과 ── */
+    .result-card {
+      background: var(--white); border-radius: 28px;
+      padding: 28px 20px 32px;
+      box-shadow: 0 8px 32px rgba(139,92,246,0.13), 0 2px 8px rgba(0,0,0,0.05);
+      border: 2px solid rgba(139,92,246,0.12);
+      animation: popIn .45s cubic-bezier(.34,1.56,.64,1);
+    }
+    @keyframes popIn {
+      from { opacity:0; transform:scale(.88) translateY(16px); }
+      to   { opacity:1; transform:scale(1)   translateY(0);    }
+    }
+
+    .result-title {
+      text-align: center; font-size: 13px; font-weight: 900;
+      color: var(--muted); letter-spacing: 2px; margin-bottom: 18px;
+    }
+
+    /* 레이더 차트 */
+    .chart-wrap { display: flex; justify-content: center; margin-bottom: 22px; }
+    canvas#radarChart { max-width: 280px; width: 100%; }
+
+    /* 척도 바 */
+    .scale-bars { display: flex; flex-direction: column; gap: 10px; margin-bottom: 22px; }
+    .bar-row { display: grid; grid-template-columns: 80px 1fr 36px; align-items: center; gap: 8px; }
+    .bar-label { font-size: 11px; font-weight: 900; }
+    .bar-track { height: 10px; background: #e2e8f0; border-radius: 99px; overflow: hidden; }
+    .bar-fill  { height: 100%; border-radius: 99px; transition: width .9s cubic-bezier(.22,.68,0,1.2); }
+    .bar-pct   { font-size: 12px; font-weight: 900; text-align: right; }
+
+    /* 유형 설명 카드 */
+    .type-cards { display: flex; flex-direction: column; gap: 12px; margin-bottom: 22px; }
+    .type-card {
+      border-radius: 18px; padding: 16px 16px 14px;
+      border-left: 5px solid transparent;
+    }
+    .type-card-header {
+      display: flex; align-items: center; gap: 8px; margin-bottom: 8px;
+    }
+    .type-card-icon { font-size: 22px; }
+    .type-card-name { font-size: 14px; font-weight: 900; }
+    .type-card-score {
+      font-size: 12px; font-weight: 700; margin-left: auto;
+      padding: 2px 10px; border-radius: 99px;
+    }
+    .type-card-desc { font-size: 13px; line-height: 1.75; color: #475569; word-break: keep-all; }
+
+    /* 종합 코멘트 */
+    .summary-box {
+      background: linear-gradient(135deg, #f5f3ff, #fdf2f8);
+      border-radius: 18px; padding: 16px;
+      margin-bottom: 22px; font-size: 14px;
+      line-height: 1.85; color: #374151; word-break: keep-all;
+    }
+    .summary-box strong { color: #7c3aed; }
+
+    /* 링크 버튼 */
+    .link-btn {
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+      width: 100%; padding: 15px; border-radius: 16px;
+      font-size: 14px; font-family: inherit; font-weight: 700;
+      text-decoration: none; cursor: pointer;
+      touch-action: manipulation; transition: filter .15s, transform .12s;
+      margin-top: 10px; border: none;
+    }
+    .link-btn:active { transform: scale(0.97); }
+    .link-btn.fortune { background: linear-gradient(135deg,#ff7eb3,#b17afe); color:#fff; box-shadow:0 4px 16px rgba(255,126,179,.3); }
+    .link-btn.fortune:hover { filter: brightness(1.07); }
+    .link-btn.iq     { background: linear-gradient(135deg,#4f8ef7,#8b5cf6); color:#fff; box-shadow:0 4px 16px rgba(79,142,247,.3); }
+    .link-btn.iq:hover { filter: brightness(1.07); }
+    .link-btn.retry  { background:#fff; border:2px solid #ddd6fe; color:#7c3aed; }
+    .link-btn.retry:hover { background:#f5f3ff; }
+
+    /* 섹션 */
+    #intro-section, #quiz-section, #result-section { display: none; }
+    #intro-section.active, #quiz-section.active, #result-section.active { display: block; }
+
+    @media(min-width:420px) {
+      canvas#radarChart { max-width: 320px; }
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+
+  <div class="title-area">
+    <span class="title-icon">🌈</span>
+    <h1>TCI 기질·성격 검사</h1>
+    <p class="subtitle">나는 어떤 기질과 성격을 가졌을까?</p>
+  </div>
+
+  <!-- 시작 화면 -->
+  <div id="intro-section" class="active">
+    <div class="card">
+      <div class="trait-chips">
+        <span class="chip chip-ns">🔥 자극추구</span>
+        <span class="chip chip-ha">🛡️ 위험회피</span>
+        <span class="chip chip-rd">💞 사회적민감성</span>
+        <span class="chip chip-ps">💪 인내력</span>
+        <span class="chip chip-sd">🦋 자율성</span>
+        <span class="chip chip-co">🤝 연대감</span>
+        <span class="chip chip-st">✨ 자기초월</span>
+      </div>
+      <ul class="intro-list">
+        <li><span>📋</span> 총 49문항 · 약 5~8분 소요</li>
+        <li><span>⭐</span> 1(전혀 아님) ~ 5(매우 그렇다) 5점 척도</li>
+        <li><span>💡</span> 기질 4가지 + 성격 3가지 측정</li>
+        <li><span>📊</span> 레이더 차트 + 유형별 상세 해설</li>
+      </ul>
+      <button class="btn" onclick="startQuiz()">🌈 검사 시작하기</button>
+      <a href="fortune.html" style="display:flex;align-items:center;justify-content:center;gap:6px;text-decoration:none;margin-top:10px;padding:15px;border-radius:18px;font-size:14px;font-family:inherit;font-weight:700;letter-spacing:1px;background:#fff;border:2px solid #ddd6fe;color:#7c3aed;">
+        🔮 오늘의 운세 보러가기
+      </a>
+    </div>
+  </div>
+
+  <!-- 퀴즈 화면 -->
+  <div id="quiz-section">
+    <div class="progress-wrap">
+      <div class="progress-meta">
+        <span id="q-counter">1 / 49</span>
+        <span id="q-dim-label"></span>
+      </div>
+      <div class="progress-bar">
+        <div class="progress-fill" id="progress-fill" style="width:0%"></div>
+      </div>
+    </div>
+    <div class="q-card" id="q-card">
+      <div class="q-number" id="q-number"></div>
+      <div class="q-text"   id="q-text"></div>
+      <div class="scale-wrap">
+        <div class="scale-labels">
+          <span>전혀 아님</span><span>보통</span><span>매우 그렇다</span>
+        </div>
+        <div class="scale-btns" id="scale-btns">
+          <button class="scale-btn" onclick="selectScale(1)">1</button>
+          <button class="scale-btn" onclick="selectScale(2)">2</button>
+          <button class="scale-btn" onclick="selectScale(3)">3</button>
+          <button class="scale-btn" onclick="selectScale(4)">4</button>
+          <button class="scale-btn" onclick="selectScale(5)">5</button>
+        </div>
+      </div>
+      <button class="next-btn" id="next-btn" onclick="nextQ()">다음 →</button>
+    </div>
+  </div>
+
+  <!-- 결과 화면 -->
+  <div id="result-section">
+    <div class="result-card">
+      <div class="result-title">— 나의 기질·성격 프로필 —</div>
+      <div class="chart-wrap"><canvas id="radarChart" width="300" height="300"></canvas></div>
+      <div class="scale-bars" id="scale-bars"></div>
+      <div class="result-title" style="margin-top:4px">— 척도별 해설 —</div>
+      <div class="type-cards"  id="type-cards"></div>
+      <div class="summary-box" id="summary-box"></div>
+      <a href="fortune.html" class="link-btn fortune">🔮 오늘의 운세도 확인해보기</a>
+      <a href="iq-test.html"  class="link-btn iq">🧠 IQ 테스트 하러가기</a>
+      <button class="link-btn retry" onclick="restartQuiz()">↺ 다시 검사하기</button>
+    </div>
+  </div>
+
+</div>
+<script>
+// ── 문항 정의 (49문항, 7척도 × 7문항) ──────────────────
+// dim: NS=자극추구, HA=위험회피, RD=사회적민감성, PS=인내력,
+//      SD=자율성, CO=연대감, ST=자기초월
+// rev: true → 역채점(6-점수)
+const QUESTIONS = [
+  /* NS 자극추구 (7) */
+  { dim:'NS', text:'새로운 것을 시도할 때 가슴이 두근거리고 흥미롭다.' },
+  { dim:'NS', text:'규칙적이고 반복적인 일보다 변화무쌍한 활동이 좋다.' },
+  { dim:'NS', text:'충동적으로 행동하는 편이고, 나중에 생각하는 경우가 많다.' },
+  { dim:'NS', text:'새로운 음식이나 장소를 탐험하는 것을 즐긴다.' },
+  { dim:'NS', text:'지루한 상황을 참기 힘들고 뭔가 새로운 자극이 필요하다.' },
+  { dim:'NS', rev:true, text:'안정적이고 예측 가능한 상황이 오히려 편안하게 느껴진다.' },
+  { dim:'NS', text:'모험적인 활동에 끌리는 편이다.' },
+
+  /* HA 위험회피 (7) */
+  { dim:'HA', text:'새로운 상황에서 걱정되거나 불안함을 쉽게 느낀다.' },
+  { dim:'HA', text:'실패가 두려워 도전하기를 주저하는 편이다.' },
+  { dim:'HA', text:'낯선 사람과 처음 만나면 많이 긴장된다.' },
+  { dim:'HA', text:'일이 잘못될까봐 미리 걱정하는 편이다.' },
+  { dim:'HA', rev:true, text:'위험하거나 불확실한 상황에서도 별로 두렵지 않다.' },
+  { dim:'HA', text:'비판이나 거절을 받으면 매우 상처를 받는다.' },
+  { dim:'HA', text:'결정을 내리기 전에 여러 번 생각하고 또 생각한다.' },
+
+  /* RD 사회적민감성 (7) */
+  { dim:'RD', text:'다른 사람의 감정과 기분에 민감하게 반응하는 편이다.' },
+  { dim:'RD', text:'친구가 슬퍼하면 나도 덩달아 슬픔을 느낀다.' },
+  { dim:'RD', text:'주변 사람들에게 인정받고 싶은 마음이 강하다.' },
+  { dim:'RD', text:'누군가 나를 싫어한다고 느끼면 매우 신경이 쓰인다.' },
+  { dim:'RD', text:'사람들과 감정을 나누고 공감하는 것을 중요하게 여긴다.' },
+  { dim:'RD', rev:true, text:'혼자 있는 것이 불편하지 않고 오히려 편안하다.' },
+  { dim:'RD', text:'다른 사람의 칭찬이 나에게 큰 동기부여가 된다.' },
+
+  /* PS 인내력 (7) */
+  { dim:'PS', text:'한번 시작한 일은 끝까지 마무리하려는 편이다.' },
+  { dim:'PS', text:'목표를 이루기 위해 오랜 시간 꾸준히 노력할 수 있다.' },
+  { dim:'PS', text:'어려운 상황에서도 쉽게 포기하지 않는다.' },
+  { dim:'PS', rev:true, text:'흥미가 떨어지면 하던 일을 중간에 그만두는 경우가 많다.' },
+  { dim:'PS', text:'보상이 없어도 옳다고 생각하는 일은 계속한다.' },
+  { dim:'PS', text:'작은 성취도 모아가면 큰 결과가 된다는 믿음이 있다.' },
+  { dim:'PS', text:'규칙이나 원칙을 꾸준히 지키는 것이 어렵지 않다.' },
+
+  /* SD 자율성 (7) */
+  { dim:'SD', text:'나 자신을 잘 이해하고 있다고 느낀다.' },
+  { dim:'SD', text:'내가 무엇을 원하는지 스스로 결정할 수 있다.' },
+  { dim:'SD', text:'나만의 삶의 목표가 뚜렷하게 있다.' },
+  { dim:'SD', rev:true, text:'나 자신에 대한 확신이 없어 남의 의견에 쉽게 흔들린다.' },
+  { dim:'SD', text:'실수를 해도 자신을 지나치게 탓하지 않는다.' },
+  { dim:'SD', text:'내 장점과 단점을 냉정하게 파악하고 있다.' },
+  { dim:'SD', text:'어떤 상황에서도 책임감 있게 행동하려고 노력한다.' },
+
+  /* CO 연대감 (7) */
+  { dim:'CO', text:'다른 사람을 도울 때 진심으로 보람을 느낀다.' },
+  { dim:'CO', text:'모든 사람은 존중받을 가치가 있다고 생각한다.' },
+  { dim:'CO', text:'나보다 어려운 처지의 사람을 보면 돕고 싶다.' },
+  { dim:'CO', rev:true, text:'내 이익이 우선이라고 생각하는 편이다.' },
+  { dim:'CO', text:'공동체(학교, 가족 등)를 위해 기꺼이 양보할 수 있다.' },
+  { dim:'CO', text:'다른 사람의 입장이 되어 생각해보는 것이 자연스럽다.' },
+  { dim:'CO', text:'주변 사람들과 함께할 때 더 큰 의미를 느낀다.' },
+
+  /* ST 자기초월 (7) */
+  { dim:'ST', text:'자연이나 우주의 신비로움에 깊이 감동받을 때가 있다.' },
+  { dim:'ST', text:'나는 세상과 연결된 더 큰 무언가의 일부라는 느낌이 든다.' },
+  { dim:'ST', text:'음악·예술·자연에서 영적인 감동을 느끼곤 한다.' },
+  { dim:'ST', rev:true, text:'눈에 보이지 않는 것들에 대한 관심이 별로 없다.' },
+  { dim:'ST', text:'삶의 의미나 목적에 대해 깊이 생각하는 편이다.' },
+  { dim:'ST', text:'작은 것에서도 아름다움이나 경이로움을 발견한다.' },
+  { dim:'ST', text:'내 삶이 큰 흐름 속에서 의미 있다고 느낀다.' },
+];
+
+// 척도 메타 정보
+const DIM_META = {
+  NS: { label:'자극추구',     color:'var(--ns)', icon:'🔥', short:'NS',
+        hi:'새로움과 변화를 추구하고, 즉흥적이며 탐험을 즐깁니다.',
+        lo:'안정과 예측가능성을 선호하고, 신중하게 행동합니다.',
+        mid:'새로운 경험과 안정 사이에서 균형을 잘 유지합니다.' },
+  HA: { label:'위험회피',     color:'var(--ha)', icon:'🛡️', short:'HA',
+        hi:'조심성이 많고 불안을 잘 느끼며, 위험을 피하려는 경향이 강합니다.',
+        lo:'대담하고 낙관적이며 긴장감을 잘 느끼지 않습니다.',
+        mid:'상황에 따라 신중함과 도전 사이를 적절히 오갑니다.' },
+  RD: { label:'사회적민감성', color:'var(--rd)', icon:'💞', short:'RD',
+        hi:'타인의 감정에 공감 능력이 뛰어나고 인간관계를 소중히 여깁니다.',
+        lo:'감정에 덜 좌우되고 독립적으로 판단하는 경향이 있습니다.',
+        mid:'감정적 교류와 독립성 사이에서 균형을 유지합니다.' },
+  PS: { label:'인내력',       color:'var(--ps)', icon:'💪', short:'PS',
+        hi:'끈기 있게 목표를 향해 나아가고, 한번 시작하면 끝까지 완수합니다.',
+        lo:'상황에 따라 유연하게 전환하는 편이며, 완벽주의적 집착이 적습니다.',
+        mid:'필요할 때 꾸준히 할 수 있으며 적절히 융통성도 발휘합니다.' },
+  SD: { label:'자율성',       color:'var(--sd)', icon:'🦋', short:'SD',
+        hi:'자신에 대한 이해가 깊고 책임감이 강하며 자기 주도적입니다.',
+        lo:'자신에 대한 확신이 다소 흔들리거나 방향을 잡는 데 시간이 필요합니다.',
+        mid:'자기 이해가 전반적으로 건강하며 성장 중입니다.' },
+  CO: { label:'연대감',       color:'var(--co)', icon:'🤝', short:'CO',
+        hi:'타인에 대한 배려심이 깊고, 공동체를 위해 헌신하는 경향이 있습니다.',
+        lo:'개인의 자율성을 중시하며 현실적·실용적으로 판단합니다.',
+        mid:'자신과 타인의 필요를 균형 있게 고려합니다.' },
+  ST: { label:'자기초월',     color:'var(--st)', icon:'✨', short:'ST',
+        hi:'삶의 깊은 의미를 추구하고 영적·철학적 감수성이 풍부합니다.',
+        lo:'현실적·실증적 사고를 선호하며 눈에 보이는 것에 집중합니다.',
+        mid:'현실 감각과 내면적 탐구를 조화롭게 가집니다.' },
+};
+
+const DIM_ORDER = ['NS','HA','RD','PS','SD','CO','ST'];
+
+// 상태
+let current = 0;
+let selected = null;
+let scores  = { NS:0, HA:0, RD:0, PS:0, SD:0, CO:0, ST:0 };
+let counts  = { NS:0, HA:0, RD:0, PS:0, SD:0, CO:0, ST:0 };
+
+function startQuiz() {
+  current = 0; selected = null;
+  DIM_ORDER.forEach(d => { scores[d] = 0; counts[d] = 0; });
+  show('quiz-section');
+  renderQ();
+}
+
+function renderQ() {
+  const q = QUESTIONS[current];
+  selected = null;
+
+  document.getElementById('q-counter').textContent     = `${current+1} / ${QUESTIONS.length}`;
+  document.getElementById('q-dim-label').textContent   = DIM_META[q.dim].label;
+  document.getElementById('progress-fill').style.width = `${(current/QUESTIONS.length)*100}%`;
+  document.getElementById('q-number').textContent      = `Q${current+1}  ${DIM_META[q.dim].icon} ${DIM_META[q.dim].label}`;
+  document.getElementById('q-text').textContent        = q.text;
+
+  const btns = document.querySelectorAll('.scale-btn');
+  btns.forEach(b => { b.className = 'scale-btn'; b.disabled = false; });
+
+  document.getElementById('next-btn').className = 'next-btn';
+
+  const card = document.getElementById('q-card');
+  card.style.animation = 'none'; card.offsetHeight; card.style.animation = '';
+}
+
+function selectScale(val) {
+  selected = val;
+  const btns = document.querySelectorAll('.scale-btn');
+  btns.forEach((b, i) => {
+    b.className = 'scale-btn';
+    if (i + 1 <= val) b.classList.add(`sel-${i+1}`);
+  });
+  document.getElementById('next-btn').classList.add('show');
+}
+
+function nextQ() {
+  if (selected === null) return;
+
+  const q  = QUESTIONS[current];
+  const v  = q.rev ? (6 - selected) : selected;
+  scores[q.dim] += v;
+  counts[q.dim]++;
+
+  current++;
+  if (current >= QUESTIONS.length) {
+    showResult();
+  } else {
+    renderQ();
+    document.getElementById('q-card').scrollIntoView({ behavior:'smooth', block:'start' });
+  }
+}
+
+function showResult() {
+  // 각 척도 0~100% 환산 (최소1점×7문=7, 최대5점×7문=35)
+  const pct = {};
+  DIM_ORDER.forEach(d => {
+    pct[d] = Math.round(((scores[d] - counts[d]) / (counts[d] * 4)) * 100);
+  });
+
+  // ── 레이더 차트 (Canvas API) ──
+  const canvas = document.getElementById('radarChart');
+  const ctx    = canvas.getContext('2d');
+  const cx = canvas.width / 2, cy = canvas.height / 2;
+  const R  = Math.min(cx, cy) - 36;
+  const N  = DIM_ORDER.length;
+  const colors = ['#f97316','#8b5cf6','#ec4899','#10b981','#3b82f6','#f59e0b','#06b6d4'];
+
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  function angle(i) { return (Math.PI * 2 * i / N) - Math.PI / 2; }
+  function pt(i, r) { return [cx + r * Math.cos(angle(i)), cy + r * Math.sin(angle(i))]; }
+
+  // 격자
+  [0.2,0.4,0.6,0.8,1].forEach(f => {
+    ctx.beginPath();
+    DIM_ORDER.forEach((_, i) => {
+      const [x,y] = pt(i, R*f);
+      i===0 ? ctx.moveTo(x,y) : ctx.lineTo(x,y);
+    });
+    ctx.closePath();
+    ctx.strokeStyle = 'rgba(148,163,184,0.35)';
+    ctx.lineWidth = 1;
+    ctx.stroke();
+  });
+
+  // 축
+  DIM_ORDER.forEach((_,i) => {
+    const [x,y] = pt(i, R);
+    ctx.beginPath(); ctx.moveTo(cx,cy); ctx.lineTo(x,y);
+    ctx.strokeStyle='rgba(148,163,184,0.4)'; ctx.lineWidth=1; ctx.stroke();
+  });
+
+  // 데이터 채우기
+  ctx.beginPath();
+  DIM_ORDER.forEach((d,i) => {
+    const r = R * (pct[d]/100);
+    const [x,y] = pt(i, r);
+    i===0 ? ctx.moveTo(x,y) : ctx.lineTo(x,y);
+  });
+  ctx.closePath();
+  ctx.fillStyle   = 'rgba(139,92,246,0.18)';
+  ctx.strokeStyle = '#8b5cf6';
+  ctx.lineWidth   = 2.5;
+  ctx.fill(); ctx.stroke();
+
+  // 점
+  DIM_ORDER.forEach((d,i) => {
+    const r = R * (pct[d]/100);
+    const [x,y] = pt(i, r);
+    ctx.beginPath(); ctx.arc(x,y,5,0,Math.PI*2);
+    ctx.fillStyle = colors[i]; ctx.fill();
+    ctx.strokeStyle='#fff'; ctx.lineWidth=2; ctx.stroke();
+  });
+
+  // 라벨
+  ctx.font = 'bold 12px Noto Sans KR, sans-serif';
+  ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+  DIM_ORDER.forEach((d,i) => {
+    const [x,y] = pt(i, R + 22);
+    ctx.fillStyle = colors[i];
+    ctx.fillText(DIM_META[d].icon + ' ' + DIM_META[d].short, x, y);
+  });
+
+  // ── 바 차트 ──
+  const barsEl = document.getElementById('scale-bars');
+  barsEl.innerHTML = DIM_ORDER.map((d,i) => `
+    <div class="bar-row">
+      <span class="bar-label" style="color:${colors[i]}">${DIM_META[d].icon} ${DIM_META[d].label}</span>
+      <div class="bar-track"><div class="bar-fill" style="width:${pct[d]}%;background:${colors[i]}"></div></div>
+      <span class="bar-pct" style="color:${colors[i]}">${pct[d]}%</span>
+    </div>
+  `).join('');
+
+  // ── 척도별 카드 ──
+  const bgColors = [
+    '#fff7ed','#f5f3ff','#fdf2f8','#ecfdf5','#eff6ff','#fffbeb','#ecfeff'
+  ];
+  const borderColors = colors;
+
+  const typeCardsEl = document.getElementById('type-cards');
+  typeCardsEl.innerHTML = DIM_ORDER.map((d,i) => {
+    const p = pct[d];
+    const level = p >= 65 ? 'hi' : p <= 35 ? 'lo' : 'mid';
+    const levelLabel = p >= 65 ? '높음' : p <= 35 ? '낮음' : '중간';
+    const meta = DIM_META[d];
+    return `
+      <div class="type-card" style="background:${bgColors[i]};border-left-color:${borderColors[i]}">
+        <div class="type-card-header">
+          <span class="type-card-icon">${meta.icon}</span>
+          <span class="type-card-name" style="color:${borderColors[i]}">${meta.label}</span>
+          <span class="type-card-score" style="background:${borderColors[i]};color:#fff">${p}% · ${levelLabel}</span>
+        </div>
+        <div class="type-card-desc">${meta[level]}</div>
+      </div>
+    `;
+  }).join('');
+
+  // ── 종합 코멘트 ──
+  const top2 = DIM_ORDER.slice().sort((a,b)=>pct[b]-pct[a]).slice(0,2);
+  const topNames = top2.map(d => `<strong>${DIM_META[d].icon} ${DIM_META[d].label}</strong>`).join('과 ');
+
+  const isHighNS = pct.NS >= 65, isHighHA = pct.HA >= 65;
+  const isHighSD = pct.SD >= 65, isHighCO = pct.CO >= 65;
+  const isHighST = pct.ST >= 65;
+
+  let summary = `이번 검사 결과, 가장 두드러진 기질·성격 특성은 ${topNames}입니다. `;
+
+  if (isHighNS && !isHighHA) summary += '새로운 자극을 즐기고 변화를 두려워하지 않는 탐험가 기질이 강합니다. ';
+  else if (isHighHA && !isHighNS) summary += '신중하고 꼼꼼하게 상황을 파악하는 안전 지향형 기질이 두드러집니다. ';
+  else if (isHighNS && isHighHA) summary += '흥미와 신중함이 공존하여, 상황에 따라 대담하게 또는 조심스럽게 행동합니다. ';
+
+  if (isHighSD) summary += '자기 이해와 책임감이 높아 성숙한 자아를 가지고 있습니다. ';
+  if (isHighCO) summary += '타인을 배려하고 공동체를 소중히 여기는 따뜻한 마음을 지녔습니다. ';
+  if (isHighST) summary += '삶의 의미와 내면 세계에 깊은 관심을 가진 영적 감수성이 풍부한 편입니다. ';
+
+  summary += '이 결과는 성향의 경향성을 보여주는 참고 자료로, 어떤 점수도 좋고 나쁨이 아닌 나만의 고유한 특성입니다. 😊';
+
+  document.getElementById('summary-box').innerHTML = summary;
+
+  show('result-section');
+  document.querySelector('.container').scrollIntoView({ behavior:'smooth', block:'start' });
+}
+
+function restartQuiz() { show('intro-section'); }
+
+function show(id) {
+  ['intro-section','quiz-section','result-section'].forEach(s =>
+    document.getElementById(s).classList.remove('active')
+  );
+  document.getElementById(id).classList.add('active');
+}
+</script>
+</body>
+</html>
